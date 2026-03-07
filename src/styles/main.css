@@ -151,6 +151,7 @@ body {
   line-height: 1.6;
 }
 
+<<<<<<< HEAD
 .hero-actions {
   margin-top: 28px;
   display: flex;
@@ -217,6 +218,8 @@ body {
   font-size: 14px;
 }
 
+=======
+>>>>>>> d621a4f30e9541290718ed33ccc43e99faf7860e
 /* ================= INFO CARD SECTION ================= */
 .info-section {
   display: flex;
@@ -256,6 +259,7 @@ body {
   box-shadow: 0 12px 35px rgba(0, 0, 0, 0.12);
 }
 
+<<<<<<< HEAD
 /* ================= SERVICES SECTION ================= */
 .services-section {
   background: #ffffff;
@@ -350,6 +354,8 @@ body {
   line-height: 1.6;
 }
 
+=======
+>>>>>>> d621a4f30e9541290718ed33ccc43e99faf7860e
 /* ================= CHAT ICON ================= */
 .chat-icon {
   position: fixed;
@@ -387,6 +393,7 @@ body {
   padding: 15px;
   border-radius: 12px;
   box-shadow: 0 5px 25px rgba(0, 0, 0, 0.2);
+<<<<<<< HEAD
 }
 
 @media (max-width: 900px) {
@@ -607,4 +614,6 @@ body {
   .featured-companions-grid {
     grid-template-columns: 1fr;
   }
+=======
+>>>>>>> d621a4f30e9541290718ed33ccc43e99faf7860e
 }
