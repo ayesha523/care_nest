@@ -1,5 +1,4 @@
 import React from "react";
-<<<<<<< HEAD
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { UserProvider } from "./context/UserContext";
 import Navbar from "./components/Navbar";
@@ -69,18 +68,6 @@ function App() {
     <UserProvider>
       <AppContent />
     </UserProvider>
-=======
-import Navbar from "./components/Navbar";
-import Home from "./pages/Home";
-import "./styles/main.css";
-
-function App() {
-  return (
-    <>
-      <Navbar />
-      <Home />
-    </>
->>>>>>> d621a4f30e9541290718ed33ccc43e99faf7860e
   );
 }
 

@@ -39,23 +39,15 @@ const isLocalDevOrigin = (origin) => {
   return /^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/i.test(origin || "");
 };
 
-// Middleware
-app.use(
-  cors({
-    origin: (origin, callback) => {
-      // Allow non-browser requests and local development origins.
-      if (!origin || allowedOrigins.includes(origin) || isLocalDevOrigin(origin)) {
-        callback(null, true);
-        return;
-      }
+// Middleware - CORS first, before JSON parsing
+app.use(cors({
+  origin: true, // Allow all origins in development
+  credentials: true,
+}));
 
-      callback(new Error(`CORS blocked for origin: ${origin}`));
-    },
-    credentials: true,
-  })
-);
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+// Body parsing with size limits
+app.use(express.json({ limit: '10mb' }));
+app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
 // Routes
 app.use("/api/auth", require("./routes/auth"));
