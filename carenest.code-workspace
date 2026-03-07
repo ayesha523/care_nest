@@ -1,0 +1,17 @@
+{
+  "folders": [
+    {
+      "path": "."
+    }
+  ],
+  "settings": {
+    "mongodb.connections": [
+      {
+        "id": "carenest-local",
+        "name": "CareNest Local Database",
+        "connectionString": "mongodb://127.0.0.1:27017",
+        "defaultDatabase": "carenest"
+      }
+    ]
+  }
+}

@@ -1,70 +1,62 @@
-# Getting Started with Create React App
+# CareNest
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+CareNest is a role-based care marketplace where:
+- Elderly users can browse and request companions.
+- Companion users can review and accept targeted requests.
 
-## Available Scripts
+This project uses a **local MongoDB database** (no cloud DB dependency).
 
-In the project directory, you can run:
+## Tech Stack
+- Frontend: React + React Router
+- Backend: Express + Mongoose
+- Auth: JWT + role-based route protection
 
-### `npm start`
+## Local Setup
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+1) Install dependencies
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+```bash
+npm install
+```
 
-### `npm test`
+2) Make sure local MongoDB is running on default port
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+```bash
+mongodb://127.0.0.1:27017
+```
 
-### `npm run build`
+3) Create/update `.env`
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+```env
+MONGO_URI=mongodb://127.0.0.1:27017/carenest
+JWT_SECRET=change_this_to_a_long_random_secret_key
+PORT=5000
+NODE_ENV=development
+CLIENT_URL=http://localhost:3000
+```
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+4) Run backend + frontend together
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+```bash
+npm run dev
+```
 
-### `npm run eject`
+5) Open app
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+```text
+http://localhost:3000
+```
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## Scripts
+- `npm run dev` → runs backend + frontend
+- `npm run server` → runs backend only
+- `npm start` → runs frontend only
+- `npm run build` → production build
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+## Security & Access
+- Auth endpoints return JWT token on signup/login.
+- Marketplace endpoints require Bearer token.
+- Role rules:
+	- Elderly: create care requests
+	- Companion: fetch/accept assigned requests
+	- Both roles: browse companion listings
