@@ -53,6 +53,48 @@ app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 app.use("/api/auth", require("./routes/auth"));
 app.use("/api/marketplace", require("./routes/marketplace"));
 
+// New API Routes
+app.use("/api/profile", require("./routes/profile"));
+app.use("/api/bookings", require("./routes/bookings"));
+app.use("/api/reviews", require("./routes/reviews"));
+app.use("/api/messages", require("./routes/messages"));
+app.use("/api/search", require("./routes/search"));
+app.use("/api/notifications", require("./routes/notifications"));
+app.use("/api/availability", require("./routes/availability"));
+app.use("/api/trust-safety", require("./routes/trust-safety"));
+app.use("/api/daily-checkin", require("./routes/daily-checkin"));
+app.use("/api/mood", require("./routes/mood"));
+app.use("/api/badges", require("./routes/badges"));
+app.use("/api/admin", require("./routes/admin"));
+
+// Emergency contact management (added to trust-safety or separate)
+const EmergencyContact = require("./models/EmergencyContact");
+app.post("/api/emergency-contacts", async (req, res) => {
+  try {
+    const { name, phone, relationship, address, notes } = req.body;
+    const token = req.headers.authorization?.split(" ")[1];
+    const jwt = require("jsonwebtoken");
+    
+    if (!token) return res.status(401).json({ success: false });
+    
+    const decoded = jwt.verify(token, process.env.JWT_SECRET || "dev_jwt_secret_change_me");
+    
+    const emergency = new EmergencyContact({
+      userId: decoded.id,
+      name,
+      phone,
+      relationship,
+      address,
+      notes,
+    });
+    
+    await emergency.save();
+    res.status(201).json({ success: true, emergency });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+});
+
 // Health check
 app.get("/api/health", (req, res) => {
   res.json({ status: "ok", message: "CareNest API is running" });

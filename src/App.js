@@ -3,6 +3,8 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { UserProvider } from "./context/UserContext";
 import Navbar from "./components/Navbar";
 import ProtectedRoute from "./components/ProtectedRoute";
+
+// Existing Pages
 import MainPage from "./pages/MainPage";
 import CompanionLogin from "./pages/CompanionLogin";
 import ElderlyLogin from "./pages/ElderlyLogin";
@@ -12,6 +14,21 @@ import Home from "./pages/Home";
 import CompanionLanding from "./pages/CompanionLanding";
 import ElderlyDashboard from "./pages/ElderlyDashboard";
 import CompanionDashboard from "./pages/CompanionDashboard";
+
+// New Pages
+import SearchCompanions from "./pages/SearchCompanions";
+import ProfileView from "./pages/ProfileView";
+import ProfileEdit from "./pages/ProfileEdit";
+import BookingPage from "./pages/BookingPage";
+import ChatPage from "./pages/ChatPage";
+import MoodTracker from "./pages/MoodTracker";
+import AvailabilityManagement from "./pages/AvailabilityManagement";
+import ReviewPage from "./pages/ReviewPage";
+import DailyCheckIn from "./pages/DailyCheckIn";
+import NotificationsPage from "./pages/NotificationsPage";
+import EmergencyContacts from "./pages/EmergencyContacts";
+import AdminPanel from "./pages/AdminPanel";
+
 import "./styles/main.css";
 
 function AppContent() {
@@ -55,6 +72,163 @@ function AppContent() {
           element={
             <ProtectedRoute roles={["companion"]}>
               <CompanionDashboard />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* New Routes for Companion Matching System */}
+        
+        {/* Search & Browse */}
+        <Route
+          path="/search-companions"
+          element={
+            <ProtectedRoute roles={["elderly"]}>
+              <>
+                <Navbar />
+                <SearchCompanions />
+              </>
+            </ProtectedRoute>
+          }
+        />
+
+        {/* Profile Pages */}
+        <Route
+          path="/profile/:userId"
+          element={
+            <ProtectedRoute roles={["elderly", "companion"]}>
+              <>
+                <Navbar />
+                <ProfileView />
+              </>
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/profile-edit"
+          element={
+            <ProtectedRoute roles={["elderly", "companion"]}>
+              <>
+                <Navbar />
+                <ProfileEdit />
+              </>
+            </ProtectedRoute>
+          }
+        />
+
+        {/* Booking System */}
+        <Route
+          path="/booking/:companionId"
+          element={
+            <ProtectedRoute roles={["elderly"]}>
+              <>
+                <Navbar />
+                <BookingPage />
+              </>
+            </ProtectedRoute>
+          }
+        />
+
+        {/* Chat/Messages */}
+        <Route
+          path="/chat/:conversationId"
+          element={
+            <ProtectedRoute roles={["elderly", "companion"]}>
+              <>
+                <Navbar />
+                <ChatPage />
+              </>
+            </ProtectedRoute>
+          }
+        />
+
+        {/* Reviews */}
+        <Route
+          path="/review/:companionId"
+          element={
+            <ProtectedRoute roles={["elderly"]}>
+              <>
+                <Navbar />
+                <ReviewPage />
+              </>
+            </ProtectedRoute>
+          }
+        />
+
+        {/* Availability Management (Companions) */}
+        <Route
+          path="/availability"
+          element={
+            <ProtectedRoute roles={["companion"]}>
+              <>
+                <Navbar />
+                <AvailabilityManagement />
+              </>
+            </ProtectedRoute>
+          }
+        />
+
+        {/* Mood Tracking (Elderly) */}
+        <Route
+          path="/mood-tracker"
+          element={
+            <ProtectedRoute roles={["elderly"]}>
+              <>
+                <Navbar />
+                <MoodTracker />
+              </>
+            </ProtectedRoute>
+          }
+        />
+
+        {/* Daily Check-in (Elderly) */}
+        <Route
+          path="/daily-checkin"
+          element={
+            <ProtectedRoute roles={["elderly"]}>
+              <>
+                <Navbar />
+                <DailyCheckIn />
+              </>
+            </ProtectedRoute>
+          }
+        />
+
+        {/* Notifications */}
+        <Route
+          path="/notifications"
+          element={
+            <ProtectedRoute roles={["elderly", "companion"]}>
+              <>
+                <Navbar />
+                <NotificationsPage />
+              </>
+            </ProtectedRoute>
+          }
+        />
+
+        {/* Emergency Contacts (Elderly) */}
+        <Route
+          path="/emergency-contacts"
+          element={
+            <ProtectedRoute roles={["elderly"]}>
+              <>
+                <Navbar />
+                <EmergencyContacts />
+              </>
+            </ProtectedRoute>
+          }
+        />
+
+        {/* Admin Panel */}
+        <Route
+          path="/admin-panel"
+          element={
+            <ProtectedRoute roles={["admin"]}>
+              <>
+                <Navbar />
+                <AdminPanel />
+              </>
             </ProtectedRoute>
           }
         />

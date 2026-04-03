@@ -74,6 +74,68 @@ const userSchema = new mongoose.Schema(
       type: Number,
       default: 0,
     },
+    // Profile fields
+    profilePicture: String,
+    age: Number,
+    university: String, // For companions
+    eldyDetails: {
+      elderName: String,
+      elderAge: Number,
+      healthConditions: [String],
+      mobilityLevel: String,
+      preferences: [String],
+    },
+    skills: {
+      type: [String],
+      default: [], // e.g., ["reading", "talking", "walking", "tech-help", "companionship"]
+    },
+    interests: [String], // e.g., ["reading", "movies", "walking", "gardening"]
+    location: {
+      address: String,
+      city: String,
+      state: String,
+      zipCode: String,
+      latitude: Number,
+      longitude: Number,
+    },
+    volunteeerMode: {
+      type: Boolean,
+      default: false,
+    },
+    totalHours: {
+      type: Number,
+      default: 0,
+    },
+    totalEarnings: {
+      type: Number,
+      default: 0,
+    },
+    totalBookings: {
+      type: Number,
+      default: 0,
+    },
+    isBlocked: {
+      type: Boolean,
+      default: false,
+    },
+    blockedUsers: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+      }
+    ],
+    badges: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "UserBadge",
+      }
+    ],
+    identityVerified: {
+      type: Boolean,
+      default: false,
+    },
+    verificationDocument: String,
+    verificationDate: Date,
   },
   {
     timestamps: true,

@@ -1,0 +1,277 @@
+/* Daily Check-In Page */
+.daily-checkin-container {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  min-height: 100vh;
+  padding: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.daily-checkin-container h1 {
+  color: white;
+  text-align: center;
+  margin-bottom: 0.5rem;
+  font-size: 2.5rem;
+}
+
+.daily-checkin-container .subtitle {
+  color: rgba(255, 255, 255, 0.9);
+  text-align: center;
+  margin-bottom: 2rem;
+  font-size: 1.1rem;
+}
+
+/* Check-in Card */
+.checkin-card {
+  background: white;
+  border-radius: 16px;
+  padding: 3rem;
+  max-width: 600px;
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.2);
+}
+
+.checkin-card h2 {
+  color: #333;
+  text-align: center;
+  margin-bottom: 2rem;
+  font-size: 1.5rem;
+}
+
+/* Status Selector */
+.status-selector {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.status-option {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.5rem;
+  border: 3px solid #e0e0e0;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s;
+  background: white;
+}
+
+.status-option input[type="radio"] {
+  display: none;
+}
+
+.status-option.selected {
+  border-color: #667eea;
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+  transform: scale(1.05);
+}
+
+.status-option.emergency.selected {
+  border-color: #d32f2f;
+  background: linear-gradient(135deg, rgba(211, 47, 47, 0.1) 0%, rgba(192, 0, 0, 0.1) 100%);
+}
+
+.status-option .emoji {
+  font-size: 2.5rem;
+  line-height: 1;
+}
+
+.status-option .label {
+  text-align: center;
+  color: #555;
+  font-weight: 600;
+  font-size: 0.95rem;
+  line-height: 1.3;
+}
+
+/* Notes Section */
+.checkin-notes {
+  margin-bottom: 2rem;
+}
+
+.checkin-notes label {
+  display: block;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 0.75rem;
+}
+
+.checkin-notes textarea {
+  width: 100%;
+  padding: 0.75rem;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-family: inherit;
+  resize: vertical;
+  min-height: 80px;
+}
+
+.checkin-notes textarea:focus {
+  outline: none;
+  border-color: #667eea;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+/* Emergency Warning */
+.emergency-warning {
+  background: linear-gradient(135deg, #ffebee 0%, #ffcdd2 100%);
+  border: 2px solid #d32f2f;
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 2rem;
+  display: none;
+}
+
+.emergency-warning.show {
+  display: block;
+  animation: slideDown 0.3s ease;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.emergency-warning-icon {
+  font-size: 1.5rem;
+  margin-right: 0.75rem;
+}
+
+.emergency-warning p {
+  color: #b71c1c;
+  margin: 0;
+  font-weight: 600;
+}
+
+/* Submit Button */
+.checkin-submit-btn {
+  width: 100%;
+  padding: 1rem;
+  background: linear-gradient(135deg, #4caf50 0%, #388e3c 100%);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.checkin-submit-btn:hover:not(:disabled) {
+  transform: scale(1.02);
+  box-shadow: 0 8px 24px rgba(76, 175, 80, 0.3);
+}
+
+.checkin-submit-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.checkin-submit-btn.emergency {
+  background: linear-gradient(135deg, #d32f2f 0%, #b71c1c 100%);
+}
+
+.checkin-submit-btn.emergency:hover:not(:disabled) {
+  box-shadow: 0 8px 24px rgba(211, 47, 47, 0.3);
+}
+
+/* Success Message */
+.checkin-success {
+  position: fixed;
+  top: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  background: white;
+  padding: 1.5rem 2rem;
+  border-radius: 12px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+  animation: slideDown 0.4s ease;
+}
+
+.checkin-success .icon {
+  font-size: 2rem;
+  color: #4caf50;
+  margin-bottom: 0.5rem;
+}
+
+.checkin-success p {
+  margin: 0;
+  color: #333;
+  font-weight: 600;
+}
+
+/* Today's Status */
+.todays-status {
+  background: #f9f9f9;
+  padding: 1.5rem;
+  border-radius: 8px;
+  text-align: center;
+  margin-top: 2rem;
+  border-left: 4px solid #667eea;
+}
+
+.todays-status h3 {
+  color: #666;
+  margin-bottom: 0.75rem;
+  font-size: 0.95rem;
+  text-transform: uppercase;
+}
+
+.todays-status .status-badge {
+  font-size: 1.5rem;
+  margin-right: 0.75rem;
+}
+
+.todays-status p {
+  color: #333;
+  margin: 0;
+  font-weight: 600;
+  font-size: 1.2rem;
+}
+
+.checkin-loading {
+  text-align: center;
+  padding: 4rem 2rem;
+  color: white;
+  font-size: 1.1rem;
+}
+
+@media (max-width: 768px) {
+  .daily-checkin-container {
+    padding: 1rem;
+  }
+
+  .checkin-card {
+    padding: 1.5rem;
+  }
+
+  .status-selector {
+    grid-template-columns: 1fr;
+  }
+
+  .status-option {
+    padding: 1rem;
+  }
+
+  .status-option .emoji {
+    font-size: 2rem;
+  }
+
+  .checkin-success {
+    max-width: 90%;
+    left: 5%;
+    right: 5%;
+    transform: translateX(0);
+  }
+}

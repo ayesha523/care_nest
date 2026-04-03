@@ -1,0 +1,262 @@
+/* Availability Management Page */
+.availability-management-container {
+  background: #f8f9fa;
+  min-height: 100vh;
+  padding: 2rem;
+}
+
+.availability-management-container h1 {
+  text-align: center;
+  color: #333;
+  margin-bottom: 0.5rem;
+  font-size: 2rem;
+}
+
+.availability-management-container .subtitle {
+  text-align: center;
+  color: #666;
+  margin-bottom: 2rem;
+  font-size: 1rem;
+}
+
+.add-slot-btn {
+  display: block;
+  margin: 0 auto 2rem;
+  padding: 0.75rem 1.5rem;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s;
+  font-size: 1rem;
+}
+
+.add-slot-btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 24px rgba(102, 126, 234, 0.3);
+}
+
+/* Availability Form */
+.availability-form {
+  max-width: 600px;
+  margin: 0 auto 2rem;
+  background: white;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+}
+
+.availability-form h2 {
+  color: #333;
+  margin-bottom: 1.5rem;
+  font-size: 1.3rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1.5rem;
+}
+
+.form-group label {
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+  color: #333;
+}
+
+.form-group select,
+.form-group input[type="time"],
+.form-group input[type="date"] {
+  padding: 0.75rem;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-family: inherit;
+  transition: border-color 0.3s;
+}
+
+.form-group select:focus,
+.form-group input:focus {
+  outline: none;
+  border-color: #667eea;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.form-actions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.submit-btn {
+  flex: 1;
+  padding: 0.75rem;
+  background: linear-gradient(135deg, #4caf50 0%, #388e3c 100%);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.submit-btn:hover {
+  transform: scale(1.02);
+  box-shadow: 0 8px 24px rgba(76, 175, 80, 0.3);
+}
+
+.cancel-btn {
+  flex: 1;
+  padding: 0.75rem;
+  background: #f0f0f0;
+  color: #555;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.cancel-btn:hover {
+  background: #e0e0e0;
+}
+
+/* Availability Schedule */
+.availability-schedule {
+  max-width: 1200px;
+  margin: 0 auto;
+  background: white;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+}
+
+.availability-schedule h2 {
+  color: #333;
+  margin-bottom: 1.5rem;
+  font-size: 1.3rem;
+}
+
+.no-slots {
+  text-align: center;
+  color: #999;
+  padding: 2rem;
+  background: #f9f9f9;
+  border-radius: 8px;
+}
+
+/* Weekly View */
+.weekly-view {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 1.5rem;
+}
+
+.day-column {
+  border: 2px solid #f0f0f0;
+  border-radius: 8px;
+  padding: 1rem;
+  background: #f9f9f9;
+  transition: all 0.3s;
+}
+
+.day-column:hover {
+  border-color: #667eea;
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%);
+}
+
+.day-column h3 {
+  color: #667eea;
+  font-size: 1rem;
+  margin-bottom: 1rem;
+  text-align: center;
+  font-weight: bold;
+}
+
+.no-availability {
+  text-align: center;
+  color: #999;
+  font-size: 0.85rem;
+  padding: 1rem;
+  background: white;
+  border-radius: 6px;
+}
+
+.slots-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.slot-item {
+  background: white;
+  padding: 0.75rem;
+  border-radius: 6px;
+  border-left: 4px solid #667eea;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.slot-time {
+  flex: 1;
+}
+
+.slot-time p {
+  margin: 0;
+  color: #333;
+  font-size: 0.9rem;
+  font-weight: bold;
+}
+
+.slot-time .recurring {
+  color: #999;
+  font-size: 0.75rem;
+  margin-top: 0.25rem;
+}
+
+.delete-btn {
+  background: none;
+  border: none;
+  color: #d32f2f;
+  cursor: pointer;
+  font-size: 1.2rem;
+  transition: all 0.3s;
+}
+
+.delete-btn:hover {
+  transform: scale(1.2);
+}
+
+.availability-loading {
+  text-align: center;
+  padding: 4rem 2rem;
+  color: #666;
+  font-size: 1.1rem;
+}
+
+@media (max-width: 768px) {
+  .availability-management-container {
+    padding: 1rem;
+  }
+
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+
+  .weekly-view {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .availability-schedule {
+    padding: 1.5rem;
+  }
+}
