@@ -160,18 +160,34 @@ router.post("/requests", protect, authorize("elderly"), async (req, res) => {
       message,
     } = req.body;
 
+    const normalizedSpecializations = Array.isArray(specializations)
+      ? specializations.filter(Boolean)
+      : specializations
+        ? [specializations]
+        : [];
+
+    const parsedHours = Number(hoursPerWeek);
+    const parsedRate = Number(hourlyRate);
+
     // Validation
-    if (
-      !companionId ||
-      !specializations ||
-      !hoursPerWeek ||
-      !hourlyRate ||
-      !startDate ||
-      !description
-    ) {
+    if (!companionId || normalizedSpecializations.length === 0 || !startDate || !description) {
       return res.status(400).json({
         success: false,
         message: "Please provide all required fields",
+      });
+    }
+
+    if (!Number.isFinite(parsedHours) || parsedHours <= 0) {
+      return res.status(400).json({
+        success: false,
+        message: "Hours per week must be greater than 0",
+      });
+    }
+
+    if (!Number.isFinite(parsedRate) || parsedRate < 0) {
+      return res.status(400).json({
+        success: false,
+        message: "Hourly rate must be a valid non-negative number",
       });
     }
 
@@ -191,11 +207,9 @@ router.post("/requests", protect, authorize("elderly"), async (req, res) => {
     const request = await JobRequest.create({
       elderlyId: req.user.id,
       companionId,
-      specializations: Array.isArray(specializations)
-        ? specializations
-        : [specializations],
-      hoursPerWeek,
-      hourlyRate,
+      specializations: normalizedSpecializations,
+      hoursPerWeek: parsedHours,
+      hourlyRate: parsedRate,
       startDate,
       description,
       message,
@@ -247,16 +261,70 @@ router.post("/requests/:id/accept", protect, authorize("companion"), async (req,
       });
     }
 
+    // Update JobRequest status
     request.status = "accepted";
     request.companionId = req.user.id;
     await request.save();
+
+    // Create a Booking from the JobRequest
+    const Booking = require("../models/Booking");
+    const startDate = new Date(request.startDate);
+    // Assume a 4-week engagement by default
+    const endDate = new Date(startDate.getTime() + 4 * 7 * 24 * 60 * 60 * 1000);
+    const totalDurationHours = request.hoursPerWeek * 4; // 4 weeks of service
+    const totalCost = request.hourlyRate * totalDurationHours;
+
+    const booking = new Booking({
+      elderlyId: request.elderlyId,
+      companionId: req.user.id,
+      startDate: startDate,
+      endDate: endDate,
+      duration: totalDurationHours, // Total hours over the 4-week period
+      status: "confirmed", // Booking is confirmed when request is accepted
+      services: request.specializations,
+      totalCost: totalCost,
+      notes: request.description,
+    });
+
+    await booking.save();
+
+    // Create notifications for both users
+    const Notification = require("../models/Notification");
+    const User = require("../models/User");
+    
+    // Get companion details for elderly notification
+    const companion = await User.findById(req.user.id);
+    
+    // Notify elderly that request was accepted
+    await Notification.create({
+      userId: request.elderlyId,
+      type: "booking_confirmed",
+      title: "Request Accepted",
+      message: `Your care request has been accepted by ${companion?.name || "a companion"}!`,
+      relatedId: booking._id,
+      relatedModel: "Booking",
+      read: false,
+    });
+
+    // Notify companion of acceptance confirmation
+    await Notification.create({
+      userId: req.user.id,
+      type: "booking_confirmed",
+      title: "Booking Confirmed",
+      message: `You have successfully accepted the care request. Booking confirmed!`,
+      relatedId: booking._id,
+      relatedModel: "Booking",
+      read: false,
+    });
 
     res.json({
       success: true,
       data: {
         requestId: request._id,
+        bookingId: booking._id,
         companionId: req.user.id,
-        status: request.status,
+        status: "confirmed",
+        booking: booking,
       },
     });
   } catch (error) {

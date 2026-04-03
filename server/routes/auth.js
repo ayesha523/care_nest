@@ -142,7 +142,16 @@ router.post("/login", async (req, res) => {
     }
 
     // Compare password
-    const isMatch = await user.comparePassword(password);
+    let isMatch;
+    try {
+      isMatch = await user.comparePassword(password);
+    } catch (compareError) {
+      console.error("Password comparison error:", compareError);
+      return res.status(500).json({
+        success: false,
+        message: "Authentication failed. Please try again.",
+      });
+    }
 
     if (!isMatch) {
       return res.status(401).json({
@@ -167,9 +176,69 @@ router.post("/login", async (req, res) => {
     });
   } catch (error) {
     console.error("Login error:", error);
+    console.error("Error stack:", error.stack);
     res.status(500).json({
       success: false,
       message: error.message || "Error logging in",
+    });
+  }
+});
+
+// @route   POST /api/auth/validate-token
+// @desc    Validate JWT token and return user data
+// @access  Public
+router.post("/validate-token", async (req, res) => {
+  try {
+    const { token } = req.body;
+
+    if (!token) {
+      return res.status(401).json({
+        success: false,
+        message: "No token provided",
+      });
+    }
+
+    // Verify token
+    const decoded = jwt.verify(token, process.env.JWT_SECRET || "dev_jwt_secret_change_me");
+
+    // Find user to ensure they still exist
+    const user = await User.findById(decoded.id);
+
+    if (!user) {
+      return res.status(401).json({
+        success: false,
+        message: "User not found",
+      });
+    }
+
+    return res.json({
+      success: true,
+      data: {
+        user: {
+          id: user._id,
+          name: user.name,
+          email: user.email,
+          role: user.role,
+        },
+      },
+    });
+  } catch (error) {
+    if (error.name === "TokenExpiredError") {
+      return res.status(401).json({
+        success: false,
+        message: "Token has expired",
+      });
+    }
+    if (error.name === "JsonWebTokenError") {
+      return res.status(401).json({
+        success: false,
+        message: "Invalid token",
+      });
+    }
+    console.error("Token validation error:", error);
+    res.status(401).json({
+      success: false,
+      message: "Token validation failed",
     });
   }
 });

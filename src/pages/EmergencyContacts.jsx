@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import "../styles/emergency-contacts.css";
 
 const EmergencyContacts = () => {
-  const [contacts, setContacts] = useState([]);
+  const [contacts] = useState([]);
   const [showForm, setShowForm] = useState(false);
   const [formData, setFormData] = useState({
     name: "",

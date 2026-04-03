@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { UserProvider } from "./context/UserContext";
 import Navbar from "./components/Navbar";
 import ProtectedRoute from "./components/ProtectedRoute";
+import GuestRoute from "./components/GuestRoute";
 
 // Existing Pages
 import MainPage from "./pages/MainPage";
@@ -29,6 +30,10 @@ import NotificationsPage from "./pages/NotificationsPage";
 import EmergencyContacts from "./pages/EmergencyContacts";
 import AdminPanel from "./pages/AdminPanel";
 
+// Competitor-Inspired Features
+import JobPostings from "./pages/JobPostings";
+import CareAssessment from "./pages/CareAssessment";
+
 import "./styles/main.css";
 
 function AppContent() {
@@ -36,10 +41,10 @@ function AppContent() {
     <Router>
       <Routes>
         <Route path="/" element={<MainPage />} />
-        <Route path="/companion-login" element={<CompanionLogin />} />
-        <Route path="/elderly-login" element={<ElderlyLogin />} />
-        <Route path="/companion-signup" element={<CompanionSignup />} />
-        <Route path="/elderly-signup" element={<ElderlySignup />} />
+        <Route path="/companion-login" element={<GuestRoute><CompanionLogin /></GuestRoute>} />
+        <Route path="/elderly-login" element={<GuestRoute><ElderlyLogin /></GuestRoute>} />
+        <Route path="/companion-signup" element={<GuestRoute><CompanionSignup /></GuestRoute>} />
+        <Route path="/elderly-signup" element={<GuestRoute><ElderlySignup /></GuestRoute>} />
         <Route
           path="/home"
           element={
@@ -228,6 +233,32 @@ function AppContent() {
               <>
                 <Navbar />
                 <AdminPanel />
+              </>
+            </ProtectedRoute>
+          }
+        />
+
+        {/* Job Postings (Care.com inspired) */}
+        <Route
+          path="/job-postings"
+          element={
+            <ProtectedRoute roles={["elderly"]}>
+              <>
+                <Navbar />
+                <JobPostings />
+              </>
+            </ProtectedRoute>
+          }
+        />
+
+        {/* Care Assessment Quiz (Caring.com inspired) */}
+        <Route
+          path="/care-assessment"
+          element={
+            <ProtectedRoute roles={["elderly"]}>
+              <>
+                <Navbar />
+                <CareAssessment />
               </>
             </ProtectedRoute>
           }

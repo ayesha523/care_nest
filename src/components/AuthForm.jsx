@@ -3,6 +3,22 @@ import { Link } from "react-router-dom";
 import "../styles/pages.css";
 import { validateLoginForm, validateSignupForm } from "../utils/authValidation";
 
+/**
+ * AuthForm Component
+ * Reusable authentication form component for login and signup
+ * Supports password strength validation, real-time requirements checking, and error handling
+ * 
+ * @param {Object} props - Component props
+ * @param {string} props.mode - Authentication mode: "login" or "signup"
+ * @param {string} props.welcomeText - Welcome message text displayed above title
+ * @param {string} props.title - Main title for the form
+ * @param {string} props.submitText - Text for submit button
+ * @param {Function} props.onSubmit - Callback fired on form submission with ({ name, email, password, confirmPassword })
+ * @param {string} props.alternateText - Text for alternate action link (e.g., "Don't have an account?")
+ * @param {string} props.alternateLinkText - Link text for alternate action (e.g., "Sign up here")
+ * @param {string} props.alternateLinkTo - Path for alternate action link
+ * @returns {React.ReactNode} Authentication form component
+ */
 function AuthForm({
   mode,
   welcomeText,
@@ -24,6 +40,9 @@ function AuthForm({
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [passwordStrength, setPasswordStrength] = useState(0);
 
+  /**
+   * Clears error and success messages when user starts typing
+   */
   const clearError = () => {
     if (error) {
       setError("");
@@ -33,6 +52,13 @@ function AuthForm({
     }
   };
 
+  /**
+   * Calculates password strength on a 6-level scale
+   * Checks for length, uppercase, lowercase, numbers, and special characters
+   * 
+   * @param {string} pwd - Password to evaluate
+   * @returns {number} Strength level 0-6
+   */
   const calculatePasswordStrength = (pwd) => {
     let strength = 0;
     if (pwd.length >= 8) strength++;
@@ -50,18 +76,31 @@ function AuthForm({
     }
   }, [password, mode]);
 
+  /**
+   * Returns user-friendly password strength label
+   * @returns {string} Strength label (Weak, Medium, Strong)
+   */
   const getStrengthLabel = () => {
     if (passwordStrength <= 2) return "Weak";
     if (passwordStrength <= 4) return "Medium";
     return "Strong";
   };
 
+  /**
+   * Returns color code matching password strength level
+   * @returns {string} CSS color value
+   */
   const getStrengthColor = () => {
     if (passwordStrength <= 2) return "#e74c3c";
     if (passwordStrength <= 4) return "#f39c12";
     return "#27ae60";
   };
 
+  /**
+   * Handles form submission with validation
+   * Validates form data, shows errors, and calls onSubmit callback
+   * @param {Event} e - Form submit event
+   */
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (isSubmitting) {

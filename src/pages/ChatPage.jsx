@@ -8,6 +8,8 @@ const ChatPage = () => {
   const [conversation, setConversation] = useState(null);
   const [messageText, setMessageText] = useState("");
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+  const [isSending, setIsSending] = useState(false);
   const messagesEndRef = useRef(null);
   const token = localStorage.getItem("token");
   const userId = JSON.parse(localStorage.getItem("user"))?._id;
@@ -29,18 +31,29 @@ const ChatPage = () => {
 
   const fetchConversationAndMessages = async () => {
     try {
+      console.log(`🔄 Fetching messages for conversation: ${conversationId}`);
       const response = await fetch(`/api/messages/${conversationId}`, {
         headers: { "Authorization": `Bearer ${token}` },
       });
 
+      console.log(`   Response Status: ${response.status}`);
+
       const data = await response.json();
+      console.log(`   Response Data:`, data);
 
       if (data.success) {
-        setConversation(conversation || { participants: data.messages[0]?.senderId });
+        setConversation(data.conversation);
         setMessages(data.messages);
+        setError("");
+        console.log(`✅ Loaded ${data.messages?.length || 0} messages`);
+      } else {
+        const errorMsg = data.message || "Failed to load conversation";
+        console.error(`❌ Fetch failed: ${errorMsg}`);
+        setError(errorMsg);
       }
     } catch (error) {
-      console.error("Error fetching messages:", error);
+      console.error("❌ Error fetching messages:", error);
+      setError("Connection error. Unable to load conversation.");
     } finally {
       setLoading(false);
     }
@@ -49,9 +62,30 @@ const ChatPage = () => {
   const handleSendMessage = async (e) => {
     e.preventDefault();
 
-    if (!messageText.trim()) return;
+    if (!messageText.trim()) {
+      setError("Message cannot be empty");
+      return;
+    }
+
+    if (!token) {
+      setError("Authentication error: No token found. Please login again.");
+      return;
+    }
+
+    if (!conversationId) {
+      setError("Error: Conversation ID not found");
+      return;
+    }
+
+    setIsSending(true);
+    setError("");
 
     try {
+      console.log("📤 Sending message...");
+      console.log(`   Conversation ID: ${conversationId}`);
+      console.log(`   Token: ${token.substring(0, 20)}...`);
+      console.log(`   Content: ${messageText}`);
+
       const response = await fetch(`/api/messages/${conversationId}`, {
         method: "POST",
         headers: {
@@ -61,14 +95,28 @@ const ChatPage = () => {
         body: JSON.stringify({ content: messageText }),
       });
 
-      const data = await response.json();
+      console.log(`   Response Status: ${response.status}`);
 
-      if (data.success) {
-        setMessages([...messages, data.message]);
-        setMessageText("");
+      const data = await response.json();
+      console.log(`   Response Data:`, data);
+
+      if (!response.ok || !data.success) {
+        const errorMsg = data.message || `Failed to send message (Status: ${response.status})`;
+        console.error(`❌ Send failed: ${errorMsg}`);
+        setError(errorMsg);
+        return;
       }
+
+      console.log("✅ Message sent successfully!");
+      // Message sent successfully
+      setMessages([...messages, data.message]);
+      setMessageText("");
+      setError("");
     } catch (error) {
-      console.error("Error sending message:", error);
+      console.error("❌ Error sending message:", error);
+      setError(`Connection error: ${error.message}`);
+    } finally {
+      setIsSending(false);
     }
   };
 
@@ -92,7 +140,7 @@ const ChatPage = () => {
               />
               <div>
                 <h2>{otherUser.name}</h2>
-                <p className="online-status">🟢 Online</p>
+                <p className="online-status">� Ready to chat</p>
               </div>
             </>
           )}
@@ -127,18 +175,25 @@ const ChatPage = () => {
       </div>
 
       {/* Message Input */}
-      <form onSubmit={handleSendMessage} className="chat-input-form">
-        <input
-          type="text"
-          value={messageText}
-          onChange={(e) => setMessageText(e.target.value)}
-          placeholder="Type your message..."
-          className="message-input"
-        />
-        <button type="submit" className="send-btn">
-          📤 Send
-        </button>
-      </form>
+      <div className="chat-input-container">
+        {error && <div className="chat-error-message">⚠️ {error}</div>}
+        <form onSubmit={handleSendMessage} className="chat-input-form">
+          <input
+            type="text"
+            value={messageText}
+            onChange={(e) => {
+              setMessageText(e.target.value);
+              setError("");
+            }}
+            placeholder="Type your message..."
+            className="message-input"
+            disabled={isSending}
+          />
+          <button type="submit" className="send-btn" disabled={isSending}>
+            {isSending ? "⏳ Sending..." : "📤 Send"}
+          </button>
+        </form>
+      </div>
     </div>
   );
 };

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import "../styles/search-companions.css";
 
 const SearchCompanions = () => {
-  const [companions, setCompanions] = useState([]);
+  const [, setCompanions] = useState([]);
   const [filteredCompanions, setFilteredCompanions] = useState([]);
   const [loading, setLoading] = useState(false);
   const [searchParams, setSearchParams] = useState({

@@ -67,6 +67,9 @@ app.use("/api/mood", require("./routes/mood"));
 app.use("/api/badges", require("./routes/badges"));
 app.use("/api/admin", require("./routes/admin"));
 
+// Competitor-Inspired Features
+app.use("/api/job-postings", require("./routes/job-postings"));
+
 // Emergency contact management (added to trust-safety or separate)
 const EmergencyContact = require("./models/EmergencyContact");
 app.post("/api/emergency-contacts", async (req, res) => {

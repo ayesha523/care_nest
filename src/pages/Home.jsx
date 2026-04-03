@@ -4,6 +4,20 @@ import ChatBox from "../components/ChatBox";
 import { getCompanions } from "../services/marketplaceService";
 import { useUser } from "../context/UserContext";
 
+/**
+ * Home Component
+ * Landing page showcasing platform features, featured companions, FAQ, and contact form
+ * 
+ * Features:
+ * - Featured companions grid with sorting and filtering
+ * - Real-time companion data loading from marketplace API
+ * - Specialization filtering with dynamic dropdown
+ * - Frequently asked questions accordion
+ * - Contact form with validation
+ * - Call-to-action buttons for login/signup based on authentication status
+ * 
+ * @returns {React.ReactNode} Home landing page component
+ */
 function Home() {
   const { user } = useUser();
   const [companions, setCompanions] = useState([]);
@@ -19,6 +33,10 @@ function Home() {
   const [contactError, setContactError] = useState("");
   const [contactSuccess, setContactSuccess] = useState("");
 
+  /**
+   * Loads featured companions from marketplace API on component mount
+   * Includes error handling and cleanup for component unmounting
+   */
   useEffect(() => {
     let isMounted = true;
 
@@ -49,6 +67,10 @@ function Home() {
     };
   }, []);
 
+  /**
+   * Memoized filtered and sorted featured companions list
+   * Sorts by rating descending and limits to 6 results
+   */
   const featuredCompanions = useMemo(() => {
     const base = specializationFilter
       ? companions.filter((companion) =>
@@ -63,6 +85,10 @@ function Home() {
       .slice(0, 6);
   }, [companions, specializationFilter]);
 
+  /**
+   * Memoized list of unique specializations from all companions
+   * Used to populate filter dropdown
+   */
   const availableSpecializations = useMemo(() => {
     const allSpecializations = companions.flatMap(
       (companion) => companion.specializations || []

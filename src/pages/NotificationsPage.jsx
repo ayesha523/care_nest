@@ -151,8 +151,8 @@ const NotificationsPage = () => {
               </div>
 
               <div className="notification-content">
-                <h3>{notification.title}</h3>
-                <p>{notification.message}</p>
+                <h3 className="notification-title">{notification.title}</h3>
+                <p className="notification-message">{notification.message}</p>
                 <span className="notification-time">
                   {new Date(notification.createdAt).toLocaleDateString("en-US", {
                     month: "short",
@@ -166,7 +166,7 @@ const NotificationsPage = () => {
               <div className="notification-actions">
                 {!notification.isRead && (
                   <button
-                    className="mark-read-btn"
+                    className="notification-mark-read-btn"
                     onClick={() => markAsRead(notification._id)}
                     title="Mark as read"
                   >
@@ -174,7 +174,7 @@ const NotificationsPage = () => {
                   </button>
                 )}
                 <button
-                  className="delete-btn"
+                  className="notification-delete-btn"
                   onClick={() => deleteNotification(notification._id)}
                   title="Delete"
                 >

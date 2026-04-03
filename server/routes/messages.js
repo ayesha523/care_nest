@@ -87,14 +87,15 @@ router.post("/conversations", verifyToken, async (req, res) => {
 // @access  Private
 router.get("/:conversationId", verifyToken, async (req, res) => {
   try {
-    const conversation = await Conversation.findById(req.params.conversationId);
+    const conversation = await Conversation.findById(req.params.conversationId)
+      .populate("participants", "name profilePicture _id");
 
     if (!conversation) {
       return res.status(404).json({ success: false, message: "Conversation not found" });
     }
 
     // Check if user is participant
-    if (!conversation.participants.includes(req.user.id)) {
+    if (!conversation.participants.some(p => p._id.toString() === req.user.id)) {
       return res.status(403).json({ success: false, message: "Unauthorized" });
     }
 
@@ -102,7 +103,7 @@ router.get("/:conversationId", verifyToken, async (req, res) => {
       conversationId: req.params.conversationId,
       deleted: false,
     })
-      .populate("senderId", "name profilePicture")
+      .populate("senderId", "name profilePicture _id")
       .sort({ createdAt: 1 });
 
     // Mark messages as read
@@ -117,6 +118,7 @@ router.get("/:conversationId", verifyToken, async (req, res) => {
 
     res.status(200).json({
       success: true,
+      conversation,
       messages,
     });
   } catch (error) {
