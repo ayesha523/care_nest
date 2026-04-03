@@ -228,6 +228,13 @@ function ElderlyDashboard() {
     setLoadingRequest(false);
   };
 
+  const scrollToSection = (sectionId) => {
+    const target = document.getElementById(sectionId);
+    if (target) {
+      target.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  };
+
   return (
     <>
       <Navbar />
@@ -294,7 +301,31 @@ function ElderlyDashboard() {
         </article>
       </section>
 
-      <section className="dashboard-grid two-column">
+      <section className="smart-nav-strip">
+        <div className="section-pills">
+          <button className="section-pill" onClick={() => scrollToSection("elderly-upcoming")}>Upcoming</button>
+          <button className="section-pill" onClick={() => scrollToSection("elderly-find")}>Find Companion</button>
+          <button className="section-pill" onClick={() => scrollToSection("elderly-health")}>Health</button>
+          <button className="section-pill" onClick={() => scrollToSection("elderly-emergency")}>Emergency</button>
+          <button className="section-pill" onClick={() => scrollToSection("elderly-recommend")}>Recommendations</button>
+        </div>
+        <div className="insight-strip">
+          <article className="insight-card">
+            <span>Weekly Care Plan</span>
+            <strong>{Math.min(100, Math.round((stats.totalHours / 20) * 100))}%</strong>
+          </article>
+          <article className="insight-card">
+            <span>Companion Response</span>
+            <strong>{filteredCompanions.length > 0 ? "High" : "Low"}</strong>
+          </article>
+          <article className="insight-card">
+            <span>Health Follow-up</span>
+            <strong>{hasCheckedInToday ? "On Track" : "Pending"}</strong>
+          </article>
+        </div>
+      </section>
+
+      <section id="elderly-upcoming" className="dashboard-grid two-column">
         <article className="panel-card">
           <div className="panel-head">
             <h2>📅 Upcoming Visits</h2>
@@ -334,7 +365,7 @@ function ElderlyDashboard() {
         />
       </section>
 
-      <section className="panel-card">
+      <section id="elderly-find" className="panel-card">
         <div className="panel-head">
           <h2>🔍 Find a Companion</h2>
           <span className="badge-count">{filteredCompanions.length}</span>
@@ -452,7 +483,7 @@ function ElderlyDashboard() {
       )}
 
       {/* Professional Health & Medical Information Section */}
-      <section className="dashboard-grid two-column">
+      <section id="elderly-health" className="dashboard-grid two-column">
         <article className="panel-card health-card">
           <div className="panel-head">
             <h2>🏥 Health Conditions</h2>
@@ -496,7 +527,7 @@ function ElderlyDashboard() {
       </section>
 
       {/* Emergency Contacts Section */}
-      <section className="panel-card">
+      <section id="elderly-emergency" className="panel-card">
         <div className="panel-head">
           <h2>🚨 Emergency Contacts</h2>
           <span className="badge-health">{emergencyContactsData.length}</span>
@@ -523,7 +554,7 @@ function ElderlyDashboard() {
       </section>
 
       {/* Professional Companion Match Recommendations */}
-      <section className="panel-card">
+      <section id="elderly-recommend" className="panel-card">
         <div className="panel-head">
           <h2>✨ Recommended Companions for Your Conditions</h2>
         </div>

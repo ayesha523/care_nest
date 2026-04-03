@@ -169,6 +169,13 @@ function CompanionDashboard() {
     setAcceptingId(null);
   };
 
+  const scrollToSection = (sectionId) => {
+    const target = document.getElementById(sectionId);
+    if (target) {
+      target.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  };
+
   return (
     <>
       <Navbar />
@@ -235,7 +242,31 @@ function CompanionDashboard() {
         </article>
       </section>
 
-      <section className="dashboard-grid two-column">
+      <section className="smart-nav-strip">
+        <div className="section-pills">
+          <button className="section-pill" onClick={() => scrollToSection("companion-queue")}>Queue</button>
+          <button className="section-pill" onClick={() => scrollToSection("companion-requests")}>Requests</button>
+          <button className="section-pill" onClick={() => scrollToSection("companion-expertise")}>Expertise</button>
+          <button className="section-pill" onClick={() => scrollToSection("companion-shifts")}>Shifts</button>
+          <button className="section-pill" onClick={() => scrollToSection("companion-match")}>Matches</button>
+        </div>
+        <div className="insight-strip">
+          <article className="insight-card">
+            <span>Acceptance Flow</span>
+            <strong>{filteredRequests.length > 0 ? "Active" : "Idle"}</strong>
+          </article>
+          <article className="insight-card">
+            <span>Schedule Load</span>
+            <strong>{recentBookings.length} Active</strong>
+          </article>
+          <article className="insight-card">
+            <span>Profile Strength</span>
+            <strong>{Math.min(100, 50 + expertise.length * 10)}%</strong>
+          </article>
+        </div>
+      </section>
+
+      <section id="companion-queue" className="dashboard-grid two-column">
         <article className="panel-card">
           <div className="panel-head">
             <h2>📋 Active Booking Queue</h2>
@@ -292,7 +323,7 @@ function CompanionDashboard() {
         </section>
       )}
 
-      <section className="panel-card">
+      <section id="companion-requests" className="panel-card">
         <div className="panel-head">
           <h2>📝 Job Requests</h2>
           <div className="status-filter">
@@ -406,7 +437,7 @@ function CompanionDashboard() {
       )}
 
       {/* Professional Expertise & Qualifications Section */}
-      <section className="dashboard-grid two-column">
+      <section id="companion-expertise" className="dashboard-grid two-column">
         <article className="panel-card expertise-card">
           <div className="panel-head">
             <h2>🎓 Professional Expertise</h2>
@@ -502,7 +533,7 @@ function CompanionDashboard() {
       </section>
 
       {/* Upcoming Shifts & Schedule */}
-      <section className="panel-card">
+      <section id="companion-shifts" className="panel-card">
         <div className="panel-head">
           <h2>📅 Your Upcoming Shifts</h2>
           <span className="badge-expertise">{recentBookings.length}</span>
@@ -533,7 +564,7 @@ function CompanionDashboard() {
       </section>
 
       {/* Recommended Matches Based on Skills */}
-      <section className="panel-card">
+      <section id="companion-match" className="panel-card">
         <div className="panel-head">
           <h2>💡 Requests Matching Your Expertise</h2>
         </div>

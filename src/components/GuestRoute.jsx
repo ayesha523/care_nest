@@ -1,5 +1,5 @@
 import React from "react";
-import { Navigate } from "react-router-dom";
+import { Navigate, useLocation } from "react-router-dom";
 import { useUser } from "../context/UserContext";
 
 /**
@@ -13,6 +13,7 @@ import { useUser } from "../context/UserContext";
  */
 function GuestRoute({ children }) {
   const { user, authReady, error } = useUser();
+  const location = useLocation();
 
   // Show loading state while authentication status is being determined
   if (!authReady) {
@@ -42,7 +43,23 @@ function GuestRoute({ children }) {
 
   // If user is logged in, redirect to their dashboard
   if (user) {
-    const dashboardPath = user.role === "elderly" ? "/elderly-dashboard" : "/companion-dashboard";
+    const normalizedUserRole = String(user.role || "").toLowerCase().trim();
+    const path = String(location.pathname || "").toLowerCase();
+    let targetAuthRole = "";
+
+    if (path.includes("/elderly-login") || path.includes("/elderly-signup")) {
+      targetAuthRole = "elderly";
+    } else if (path.includes("/companion-login") || path.includes("/companion-signup")) {
+      targetAuthRole = "companion";
+    }
+
+    // Allow role switch: if a logged-in user opens the opposite role auth page,
+    // render it instead of forcing redirect to their current dashboard.
+    if (targetAuthRole && targetAuthRole !== normalizedUserRole) {
+      return children;
+    }
+
+    const dashboardPath = normalizedUserRole === "elderly" ? "/elderly-dashboard" : "/companion-dashboard";
     console.log(`GuestRoute: User is authenticated, redirecting to ${dashboardPath}`);
     return <Navigate to={dashboardPath} replace />;
   }
