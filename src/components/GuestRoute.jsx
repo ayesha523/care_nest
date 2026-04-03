@@ -34,7 +34,7 @@ function GuestRoute({ children }) {
             marginBottom: "10px",
             fontWeight: "500"
           }}>
-            Loading...
+            Checking authentication 
           </div>
         </div>
       </div>
@@ -69,7 +69,7 @@ function GuestRoute({ children }) {
     console.warn("GuestRoute: Authentication error present:", error);
   }
 
-  // If user is not logged in, show the login/signup page
+ // If user is not authenticated, render the login/signup page
   return children;
 }
 
