@@ -328,12 +328,12 @@ function ElderlyDashboard() {
       <section id="elderly-upcoming" className="dashboard-grid two-column">
         <article className="panel-card">
           <div className="panel-head">
-            <h2>📅 Upcoming Visits</h2>
+            <h2>📅 Upcoming Care  Visits</h2>
             <span className="badge-count">{upcomingBookings.length}</span>
           </div>
 
           {upcomingBookings.length === 0 ? (
-            <p className="panel-empty">No upcoming bookings. Schedule one now!</p>
+            <p className="panel-empty">No upcoming bookings yet. Schedule one now!</p>
           ) : (
             <div className="timeline-list">
               {upcomingBookings.map((booking) => (
