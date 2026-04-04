@@ -146,9 +146,9 @@ const EmergencyContacts = () => {
           </div>
 
           <div className="form-actions">
-            <button type="submit" class name="submit-btn" disabled={submitting}>
+            <button type="submit" className="submit-btn" disabled={submitting}>
               {submitting ? "Adding..." : "Add Contact"}
-            </button>
+          </button>
             <button type="button" className="cancel-btn" onClick={() => setShowForm(false)}>
               Cancel
             </button>
