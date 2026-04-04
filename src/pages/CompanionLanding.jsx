@@ -136,7 +136,7 @@ function CompanionLanding() {
       <section className="companion-landing__stats">
         <div className="companion-landing__stat-item">
           <h3>2,500+</h3>
-          <p>Families supported</p>
+          <p>Families served</p>
         </div>
         <div className="companion-landing__stat-item">
           <h3>900+</h3>
@@ -233,7 +233,7 @@ function CompanionLanding() {
       </section>
 
       <section className="companion-landing__tools">
-        <h2>Built for Professional Companions</h2>
+        <h2>Built for Dedicated Companions</h2>
         <div className="companion-landing__tool-list">
           <div className="companion-landing__tool-item">
             <h3>Request Management</h3>
@@ -305,7 +305,7 @@ function CompanionLanding() {
       </section>
 
       <section className="companion-landing__inquiry">
-        <h2>Start Your Companion Journey</h2>
+        <h2>Start  with Your Companion Journey</h2>
         <p>
           Submit your details and specialization to get onboarding guidance from
           CareNest.
