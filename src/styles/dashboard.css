@@ -29,7 +29,7 @@
 
 .dashboard-hero-card {
   display: grid;
-  grid-template-columns: 1.2fr 1fr;
+  grid-template-columns: 1.2fr auto 1fr;
   gap: 18px;
   align-items: center;
   border: 1px solid var(--panel-border);
@@ -72,6 +72,22 @@
   gap: 10px;
   flex-wrap: wrap;
   justify-content: flex-end;
+}
+
+.hero-avatar-block {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.hero-avatar {
+  width: 78px;
+  height: 78px;
+  border-radius: 999px;
+  object-fit: cover;
+  border: 3px solid rgba(17, 91, 76, 0.25);
+  box-shadow: 0 8px 24px rgba(10, 52, 43, 0.18);
 }
 
 .action-btn {
@@ -443,6 +459,37 @@
   justify-content: space-between;
   gap: 8px;
   align-items: center;
+}
+
+.avatar-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+
+.avatar-meta {
+  min-width: 0;
+}
+
+.avatar-meta h3 {
+  margin: 0;
+}
+
+.avatar-meta p {
+  margin: 2px 0 0;
+  color: var(--text-soft);
+  font-size: 0.82rem;
+}
+
+.entity-avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 999px;
+  object-fit: cover;
+  border: 2px solid rgba(17, 91, 76, 0.2);
+  background: #f5f7f6;
+  flex-shrink: 0;
 }
 
 .profile-head h3 {
@@ -842,6 +889,26 @@
   background: #e6f8ee;
   color: #0f6d44;
   border: 1px solid #b8e6cb;
+}
+
+.feedback-banner {
+  margin-top: 12px;
+  border-radius: 12px;
+  padding: 10px 12px;
+  font-weight: 600;
+  border: 1px solid transparent;
+}
+
+.feedback-banner.success {
+  background: #e9f8ef;
+  border-color: #bde9cc;
+  color: #166946;
+}
+
+.feedback-banner.error {
+  background: #feecec;
+  border-color: #f4c2c2;
+  color: #9d2f2f;
 }
 
 .modal-details {

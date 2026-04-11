@@ -172,6 +172,32 @@ const ProfileEdit = () => {
     }));
   };
 
+  const handleProfileImageFileChange = (e) => {
+    const file = e.target.files?.[0];
+    if (!file) {
+      return;
+    }
+
+    if (!file.type.startsWith("image/")) {
+      alert("Please select an image file.");
+      return;
+    }
+
+    if (file.size > 2 * 1024 * 1024) {
+      alert("Please upload an image smaller than 2MB.");
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = () => {
+      setProfileData((prev) => ({
+        ...prev,
+        profilePicture: String(reader.result || ""),
+      }));
+    };
+    reader.readAsDataURL(file);
+  };
+
   const handleSave = async (e) => {
     e.preventDefault();
     setSaving(true);
@@ -256,6 +282,27 @@ const ProfileEdit = () => {
               onChange={handleInputChange}
               placeholder="https://..."
             />
+            <input
+              type="file"
+              accept="image/png,image/jpeg,image/webp,image/gif"
+              onChange={handleProfileImageFileChange}
+            />
+            {profileData.profilePicture && (
+              <div className="profile-image-preview-wrap">
+                <img
+                  className="profile-image-preview"
+                  src={profileData.profilePicture}
+                  alt="Profile preview"
+                />
+                <button
+                  type="button"
+                  className="remove-image-btn"
+                  onClick={() => setProfileData((prev) => ({ ...prev, profilePicture: "" }))}
+                >
+                  Remove Photo
+                </button>
+              </div>
+            )}
           </div>
         </section>
 

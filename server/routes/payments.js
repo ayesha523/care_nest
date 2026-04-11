@@ -22,6 +22,8 @@ const getPartnerName = (booking, role) => {
   return booking.elderlyId?.name || "Elderly Member";
 };
 
+const BOOKING_STATUSES_PAYABLE = ["confirmed", "in-progress", "completed"];
+
 const finalizeTransaction = async (tranId, status) => {
   const transaction = await PaymentTransaction.findOne({ transactionId: tranId });
   if (!transaction) {
@@ -29,6 +31,13 @@ const finalizeTransaction = async (tranId, status) => {
   }
 
   if (status === "success") {
+    const booking = await Booking.findById(transaction.bookingId);
+    if (!booking || !BOOKING_STATUSES_PAYABLE.includes(booking.status)) {
+      transaction.status = "fail";
+      await transaction.save();
+      return transaction;
+    }
+
     transaction.status = "success";
     transaction.paidAt = new Date();
     await transaction.save();
@@ -63,6 +72,13 @@ router.post("/booking/:bookingId/initiate", protect, async (req, res) => {
 
     if (booking.paymentStatus === "paid") {
       return res.status(400).json({ success: false, message: "Booking is already paid" });
+    }
+
+    if (!BOOKING_STATUSES_PAYABLE.includes(booking.status)) {
+      return res.status(400).json({
+        success: false,
+        message: "Payment is allowed only after companion accepts the booking",
+      });
     }
 
     const amount = Number(booking.totalCost || 0);

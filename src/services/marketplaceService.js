@@ -44,6 +44,7 @@ const MOCK_COMPANIONS = [
     name: "Maria Garcia",
     role: "companion",
     email: "maria@carenest.com",
+    profilePicture: "",
     specializations: ["dementia care", "mobility assistance", "cooking"],
     hourlyRate: 25,
     rating: 4.8,
@@ -57,6 +58,7 @@ const MOCK_COMPANIONS = [
     name: "James Wilson",
     role: "companion",
     email: "james@carenest.com",
+    profilePicture: "",
     specializations: ["companionship", "light housekeeping", "errands"],
     hourlyRate: 22,
     rating: 4.6,
@@ -70,6 +72,7 @@ const MOCK_COMPANIONS = [
     name: "Amara Okafor",
     role: "companion",
     email: "amara@carenest.com",
+    profilePicture: "",
     specializations: ["medical support", "physical therapy", "nutrition"],
     hourlyRate: 28,
     rating: 4.9,
@@ -86,6 +89,7 @@ const MOCK_JOB_REQUESTS = [
     id: "req-001",
     elderlyName: "Margaret Johnson",
     elderlyId: "eld-001",
+    elderlyProfilePicture: "",
     status: "open",
     specializations: ["dementia care", "mobility assistance"],
     hoursPerWeek: 20,
@@ -97,6 +101,7 @@ const MOCK_JOB_REQUESTS = [
     id: "req-002",
     elderlyName: "Robert Smith",
     elderlyId: "eld-002",
+    elderlyProfilePicture: "",
     status: "open",
     specializations: ["companionship", "errands"],
     hoursPerWeek: 15,
@@ -206,6 +211,62 @@ export const getCompanions = async (filters = {}) => {
 
   const queryParams = new URLSearchParams(filters);
   return apiGet(`/api/marketplace/companions?${queryParams}`);
+};
+
+/**
+ * Fetches elderly members for companions
+ * @param {Object} [filters={}] - Optional filters (search)
+ * @returns {Promise<{success: boolean, data: Array, error?: string}>}
+ */
+export const getElderlyMembers = async (filters = {}) => {
+  if (typeof filters !== "object") {
+    return {
+      success: false,
+      error: "Invalid filters provided",
+      data: [],
+    };
+  }
+
+  const queryParams = new URLSearchParams(filters);
+  return apiGet(`/api/marketplace/elderly?${queryParams}`);
+};
+
+/**
+ * Companion sends a support request to an elderly member
+ * @param {string} elderlyId - Elderly user ID
+ * @param {Object} requestData - Request details
+ * @returns {Promise<{success: boolean, data?: Object, error?: string}>}
+ */
+export const requestElderlySupport = async (elderlyId, requestData) => {
+  if (!elderlyId || typeof elderlyId !== "string") {
+    return {
+      success: false,
+      error: "Invalid elderly ID provided",
+    };
+  }
+
+  if (!requestData || typeof requestData !== "object") {
+    return {
+      success: false,
+      error: "Invalid request data provided",
+    };
+  }
+
+  try {
+    const response = await fetch(`/api/marketplace/elderly/${encodeURIComponent(elderlyId)}/request`, {
+      method: "POST",
+      headers: buildHeaders(),
+      body: JSON.stringify(requestData),
+    });
+
+    return await parseApiResponse(response);
+  } catch (error) {
+    console.error("Failed to submit elderly support request:", error);
+    return {
+      success: false,
+      error: "Unable to submit request. Please try again.",
+    };
+  }
 };
 
 /**
@@ -352,6 +413,81 @@ export const acceptJobRequest = async (requestId) => {
     return {
       success: false,
       error: "Unable to accept request. Please try again.",
+    };
+  }
+};
+
+/**
+ * Declines a job request (for companions)
+ * @param {string} requestId - ID of the job request to decline
+ * @returns {Promise<{success: boolean, data?: Object, error?: string}>}
+ */
+export const declineJobRequest = async (requestId) => {
+  if (!requestId || typeof requestId !== "string") {
+    return {
+      success: false,
+      error: "Invalid request ID provided",
+    };
+  }
+
+  if (USE_MOCK_DATA) {
+    return {
+      success: true,
+      data: { requestId, status: "cancelled" },
+    };
+  }
+
+  try {
+    const response = await fetch(`/api/marketplace/requests/${encodeURIComponent(requestId)}/decline`, {
+      method: "POST",
+      headers: buildHeaders(),
+      body: JSON.stringify({}),
+    });
+
+    return await parseApiResponse(response);
+  } catch (error) {
+    console.error("Failed to decline job request:", error);
+    return {
+      success: false,
+      error: "Unable to decline request. Please try again.",
+    };
+  }
+};
+
+/**
+ * Elderly responds to a companion-to-elderly request notification
+ * @param {string} notificationId - Notification id
+ * @param {"accept"|"decline"} action - Response action
+ * @returns {Promise<{success: boolean, data?: Object, error?: string}>}
+ */
+export const respondToCompanionRequest = async (notificationId, action) => {
+  if (!notificationId || typeof notificationId !== "string") {
+    return {
+      success: false,
+      error: "Invalid request ID provided",
+    };
+  }
+
+  if (!["accept", "decline"].includes(action)) {
+    return {
+      success: false,
+      error: "Invalid action",
+    };
+  }
+
+  try {
+    const response = await fetch(`/api/marketplace/elderly/requests/${encodeURIComponent(notificationId)}/respond`, {
+      method: "POST",
+      headers: buildHeaders(),
+      body: JSON.stringify({ action }),
+    });
+
+    return await parseApiResponse(response);
+  } catch (error) {
+    console.error("Failed to respond to companion request:", error);
+    return {
+      success: false,
+      error: "Unable to process request response.",
     };
   }
 };

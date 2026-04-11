@@ -229,7 +229,7 @@ function BookingHistoryTransactions() {
       return [];
     }
 
-    const allowedStatuses = ["pending", "confirmed", "in-progress", "completed"];
+    const allowedStatuses = ["confirmed", "in-progress", "completed"];
     return filteredBookings.filter(
       (booking) =>
         allowedStatuses.includes(booking.status) &&
@@ -569,7 +569,7 @@ function BookingHistoryTransactions() {
                   const partner = isCompanion ? booking.elderlyId : booking.companionId;
                   const canPay =
                     !isCompanion &&
-                    ["pending", "confirmed", "in-progress", "completed"].includes(booking.status) &&
+                    ["confirmed", "in-progress", "completed"].includes(booking.status) &&
                     booking.paymentStatus !== "paid" &&
                     Number(booking.totalCost || 0) > 0;
                   return (
