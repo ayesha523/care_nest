@@ -1,0 +1,315 @@
+.booking-ledger-page {
+  min-height: calc(100vh - 72px);
+  padding: 24px;
+  background:
+    radial-gradient(circle at 8% 6%, rgba(255, 184, 77, 0.16), transparent 32%),
+    radial-gradient(circle at 92% 2%, rgba(17, 91, 76, 0.1), transparent 32%),
+    linear-gradient(160deg, #f6fbf8 0%, #ecf4ef 100%);
+  color: #17332c;
+}
+
+.booking-ledger-hero {
+  border: 1px solid rgba(23, 78, 65, 0.18);
+  border-radius: 20px;
+  padding: 24px;
+  background: rgba(255, 255, 255, 0.88);
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  align-items: center;
+}
+
+.booking-ledger-eyebrow {
+  margin: 0;
+  font-size: 0.75rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #115b4c;
+  font-weight: 700;
+}
+
+.booking-ledger-hero h1 {
+  margin: 4px 0 8px;
+  font-size: clamp(1.5rem, 2.7vw, 2rem);
+}
+
+.booking-ledger-hero p {
+  margin: 0;
+  color: #4b635b;
+}
+
+.booking-ledger-btn {
+  border: 0;
+  border-radius: 10px;
+  padding: 11px 16px;
+  background: linear-gradient(110deg, #0a4237, #115b4c);
+  color: #fff;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.booking-ledger-stats {
+  margin-top: 16px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 12px;
+}
+
+.booking-ledger-stats article {
+  border: 1px solid rgba(23, 78, 65, 0.16);
+  border-radius: 14px;
+  padding: 14px;
+  background: rgba(255, 255, 255, 0.86);
+}
+
+.booking-ledger-stats span {
+  display: block;
+  color: #4b635b;
+  font-size: 0.82rem;
+  margin-bottom: 6px;
+}
+
+.booking-ledger-stats strong {
+  font-size: 1.25rem;
+}
+
+.booking-ledger-controls {
+  margin-top: 14px;
+  border: 1px solid rgba(23, 78, 65, 0.16);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.88);
+  padding: 12px;
+  display: grid;
+  grid-template-columns: 2fr repeat(4, minmax(140px, 1fr)) auto;
+  gap: 10px;
+}
+
+.booking-ledger-controls input,
+.booking-ledger-controls select {
+  border: 1px solid rgba(17, 91, 76, 0.2);
+  border-radius: 10px;
+  padding: 10px;
+  font-size: 0.9rem;
+  background: #fff;
+}
+
+.booking-ledger-controls input:focus,
+.booking-ledger-controls select:focus {
+  outline: none;
+  border-color: #115b4c;
+  box-shadow: 0 0 0 3px rgba(17, 91, 76, 0.12);
+}
+
+.booking-ledger-grid {
+  margin-top: 16px;
+  display: grid;
+  grid-template-columns: 1fr 1.4fr;
+  gap: 14px;
+}
+
+.booking-ledger-panel {
+  border: 1px solid rgba(23, 78, 65, 0.16);
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.9);
+  padding: 16px;
+}
+
+.booking-ledger-panel-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.booking-ledger-panel-head h2 {
+  margin: 0;
+  font-size: 1.1rem;
+}
+
+.booking-ledger-panel-head span {
+  font-size: 0.82rem;
+  padding: 6px 10px;
+  border-radius: 10px;
+  background: rgba(17, 91, 76, 0.1);
+  color: #115b4c;
+}
+
+.booking-ledger-list {
+  display: grid;
+  gap: 10px;
+}
+
+.booking-ledger-list-item {
+  border: 1px solid rgba(17, 91, 76, 0.15);
+  border-radius: 12px;
+  background: #f8fcfa;
+  padding: 12px;
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  align-items: flex-start;
+}
+
+.booking-ledger-list-item p {
+  margin: 3px 0 0;
+  color: #4b635b;
+  font-size: 0.85rem;
+}
+
+.booking-ledger-table-wrap {
+  overflow-x: auto;
+}
+
+.booking-ledger-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.booking-ledger-table th,
+.booking-ledger-table td {
+  text-align: left;
+  border-bottom: 1px solid rgba(17, 91, 76, 0.14);
+  padding: 10px 8px;
+  font-size: 0.9rem;
+}
+
+.booking-ledger-table th {
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #4b635b;
+}
+
+.status-chip {
+  border-radius: 12px;
+  padding: 5px 10px;
+  font-size: 0.74rem;
+  text-transform: capitalize;
+  font-weight: 700;
+  background: #e6efeb;
+  color: #0a4237;
+}
+
+.status-chip.pending,
+.status-chip.open {
+  background: #fff1cf;
+  color: #855500;
+}
+
+.status-chip.confirmed,
+.status-chip.accepted,
+.status-chip.in-progress,
+.status-chip.success,
+.status-chip.paid {
+  background: #dff6eb;
+  color: #0f694e;
+}
+
+.status-chip.completed {
+  background: #dce9ff;
+  color: #2a4f9d;
+}
+
+.status-chip.fail,
+.status-chip.cancel,
+.status-chip.cancelled,
+.status-chip.rejected,
+.status-chip.refunded {
+  background: #ffe2e2;
+  color: #a32828;
+}
+
+.ledger-pagination {
+  margin-top: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  color: #4b635b;
+  font-size: 0.85rem;
+}
+
+.ledger-pagination > div {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.ledger-pagination button {
+  border: 1px solid rgba(17, 91, 76, 0.22);
+  border-radius: 8px;
+  background: #fff;
+  color: #115b4c;
+  font-weight: 700;
+  padding: 6px 10px;
+  cursor: pointer;
+}
+
+.ledger-pagination button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.booking-ledger-empty {
+  margin: 12px 0;
+  color: #4b635b;
+}
+
+.booking-ledger-error {
+  color: #b23f3f;
+}
+
+.booking-ledger-payment-panel {
+  margin-top: 14px;
+}
+
+.pay-now-btn {
+  align-self: center;
+  border: 0;
+}
+
+.pay-now-btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.pay-inline-btn {
+  border: 0;
+  border-radius: 8px;
+  padding: 7px 10px;
+  background: linear-gradient(110deg, #0a4237, #115b4c);
+  color: #fff;
+  font-weight: 700;
+  cursor: pointer;
+  font-size: 0.8rem;
+}
+
+.pay-inline-btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.muted-note {
+  color: #9aa8a2;
+}
+
+@media (max-width: 900px) {
+  .booking-ledger-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .booking-ledger-controls {
+    grid-template-columns: 1fr;
+  }
+
+  .booking-ledger-hero {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .ledger-pagination {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}

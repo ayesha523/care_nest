@@ -1,0 +1,84 @@
+.payment-gateway-page {
+  min-height: calc(100vh - 72px);
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background: linear-gradient(160deg, #f6fbf8 0%, #e7f3ee 100%);
+}
+
+.payment-gateway-card {
+  width: min(560px, 100%);
+  border: 1px solid rgba(17, 91, 76, 0.2);
+  border-radius: 18px;
+  padding: 24px;
+  background: #fff;
+  box-shadow: 0 10px 28px rgba(14, 57, 47, 0.1);
+}
+
+.payment-gateway-label {
+  margin: 0;
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: #115b4c;
+}
+
+.payment-gateway-card h1 {
+  margin: 10px 0;
+}
+
+.payment-gateway-card p {
+  color: #36514a;
+}
+
+.payment-actions {
+  margin-top: 16px;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.payment-actions.single {
+  grid-template-columns: 1fr;
+}
+
+.payment-actions button {
+  border: 0;
+  border-radius: 10px;
+  padding: 10px 14px;
+  cursor: pointer;
+  color: #fff;
+  font-weight: 700;
+  background: #115b4c;
+}
+
+.payment-actions .pay-fail {
+  background: #b23f3f;
+}
+
+.payment-actions .pay-cancel {
+  background: #8d5f1a;
+}
+
+.payment-error {
+  color: #b23f3f;
+  font-weight: 600;
+}
+
+.result-success h1 {
+  color: #0f694e;
+}
+
+.result-fail h1 {
+  color: #b23f3f;
+}
+
+.result-cancel h1 {
+  color: #8d5f1a;
+}
+
+@media (max-width: 680px) {
+  .payment-actions {
+    grid-template-columns: 1fr;
+  }
+}

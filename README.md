@@ -33,7 +33,24 @@ JWT_SECRET=change_this_to_a_long_random_secret_key
 PORT=5000
 NODE_ENV=development
 CLIENT_URL=http://localhost:3000
+
+# Payment gateway mode: mock | sslcommerz
+PAYMENT_GATEWAY_MODE=mock
+
+# Public backend URL for gateway callbacks (use ngrok/public URL in real tests)
+SERVER_PUBLIC_URL=http://localhost:5000
+
+# SSLCommerz credentials (required when PAYMENT_GATEWAY_MODE=sslcommerz)
+SSL_IS_LIVE=false
+SSL_STORE_ID=
+SSL_STORE_PASSWORD=
 ```
+
+## SSLCommerz Payment Notes
+- To use real SSLCommerz flow, set `PAYMENT_GATEWAY_MODE=sslcommerz`.
+- Configure `SSL_STORE_ID`, `SSL_STORE_PASSWORD`, and `SERVER_PUBLIC_URL`.
+- `SERVER_PUBLIC_URL` must be publicly reachable by SSLCommerz callback servers.
+- If SSL mode is enabled without credentials, payment initiation will fail with a clear error.
 
 4) Run backend + frontend together
 

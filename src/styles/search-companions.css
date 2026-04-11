@@ -300,3 +300,9 @@
 .capitalize {
   text-transform: capitalize;
 }
+
+.no-skill-hint {
+  margin: 0;
+  color: #777;
+  font-size: 0.9rem;
+}

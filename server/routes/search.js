@@ -27,6 +27,7 @@ const verifyToken = (req, res, next) => {
 router.get("/companions", async (req, res) => {
   try {
     const {
+      q,
       location,
       skills,
       minRating,
@@ -36,6 +37,19 @@ router.get("/companions", async (req, res) => {
     } = req.query;
 
     let filter = { role: "companion", isBlocked: false };
+
+    if (q) {
+      const safeQuery = String(q).replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+      const textRegex = new RegExp(safeQuery, "i");
+      filter.$or = [
+        { name: textRegex },
+        { fullName: textRegex },
+        { bio: textRegex },
+        { skills: textRegex },
+        { specializations: textRegex },
+        { "location.city": textRegex },
+      ];
+    }
 
     if (location) {
       filter["location.city"] = { $regex: location, $options: "i" };
@@ -63,6 +77,17 @@ router.get("/companions", async (req, res) => {
       .populate("badges")
       .limit(50);
 
+    const [skillCatalog, specializationCatalog] = await Promise.all([
+      User.distinct("skills", { role: "companion", isBlocked: false }),
+      User.distinct("specializations", { role: "companion", isBlocked: false }),
+    ]);
+
+    const availableSkills = [...new Set(
+      [...skillCatalog, ...specializationCatalog]
+        .map((item) => (typeof item === "string" ? item.trim().toLowerCase() : ""))
+        .filter(Boolean)
+    )].sort();
+
     // Add review count and avg rating
     const companionsWithRatings = await Promise.all(
       companions.map(async (companion) => {
@@ -82,6 +107,7 @@ router.get("/companions", async (req, res) => {
       success: true,
       count: companionsWithRatings.length,
       companions: companionsWithRatings,
+      availableSkills,
     });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });

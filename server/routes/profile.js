@@ -73,6 +73,7 @@ router.put("/:userId", verifyToken, async (req, res) => {
       "hourlyRate",
       "availability",
       "specializations",
+      "certifications",
       "volunteeerMode",
       "eldyDetails",
     ];

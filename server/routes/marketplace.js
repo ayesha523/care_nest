@@ -125,6 +125,7 @@ router.get("/requests", protect, authorize("companion"), async (req, res) => {
       data: requests.map((r) => ({
         id: r._id,
         elderlyName: r.elderlyId?.name || "Unknown",
+        elderlyEmail: r.elderlyId?.email || "",
         elderlyId: r.elderlyId?._id,
         companionId: r.companionId,
         status: r.status,
