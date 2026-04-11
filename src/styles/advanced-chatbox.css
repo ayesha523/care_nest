@@ -4,7 +4,8 @@
   display: flex;
   flex-direction: column;
   height: 100%;
-  background: linear-gradient(180deg, #fff 0%, #f8fbfa 100%);
+  background: linear-gradient(180deg, #0b4e4d 0%, #1a7c6f 55%, #24a181 100%);
+  color: #ffffff;
   border-radius: 18px;
   overflow: hidden;
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.18);
@@ -28,8 +29,8 @@
   align-items: center;
   justify-content: space-between;
   padding: 14px 16px;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
-  background: linear-gradient(135deg, #ffffff 0%, #f9fbfa 100%);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  background: linear-gradient(135deg, rgba(38, 129, 107, 0.95) 0%, rgba(30, 108, 93, 0.95) 100%);
   backdrop-filter: blur(10px);
 }
 
@@ -85,7 +86,7 @@
   margin: 0;
   font-size: 16px;
   font-weight: 700;
-  color: #0a4237;
+  color: #ffffff;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -94,7 +95,7 @@
 .online-status {
   margin: 4px 0 0;
   font-size: 12px;
-  color: #7a8d84;
+  color: rgba(255, 255, 255, 0.85);
   display: flex;
   align-items: center;
   gap: 6px;
@@ -152,7 +153,7 @@
   display: flex;
   flex-direction: column;
   gap: 10px;
-  background: linear-gradient(180deg, #ffffff 0%, #f8fafb 100%);
+  background: linear-gradient(180deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.12) 100%);
 }
 
 .messenger-messages::-webkit-scrollbar {
@@ -256,8 +257,8 @@
 }
 
 .msg-bubble.received {
-  background: #e8eef0;
-  color: #0a3d35;
+  background: linear-gradient(135deg, #2b8e77 0%, #1d6a58 100%);
+  color: #ffffff;
   border-bottom-left-radius: 4px;
 }
 
@@ -391,8 +392,8 @@
 /* ===== MESSENGER INPUT AREA ===== */
 .messenger-input-area {
   padding: 14px 14px;
-  border-top: 1px solid rgba(0, 0, 0, 0.06);
-  background: linear-gradient(180deg, #ffffff 0%, #f9fbfa 100%);
+  border-top: 1px solid rgba(255, 255, 255, 0.18);
+  background: linear-gradient(180deg, rgba(26, 110, 94, 0.95) 0%, rgba(20, 90, 80, 0.95) 100%);
   backdrop-filter: blur(10px);
 }
 
@@ -410,8 +411,8 @@
   display: flex;
   gap: 8px;
   align-items: flex-end;
-  background: #f9fbfa;
-  border: 1px solid rgba(0, 0, 0, 0.08);
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.22);
   border-radius: 24px;
   padding: 8px 12px;
   transition: all 0.2s ease;
@@ -429,14 +430,14 @@
   padding: 10px 4px;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   font-size: 15px;
-  color: #0a4237;
+  color: #ffffff;
   resize: none;
   max-height: 90px;
   outline: none;
 }
 
 .textarea-input::placeholder {
-  color: #a0a9a4;
+  color: rgba(255, 255, 255, 0.7);
 }
 
 .textarea-input:disabled {
