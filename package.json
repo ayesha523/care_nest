@@ -17,6 +17,7 @@
     "mongodb": "^7.1.0",
     "mongoose": "^8.23.0",
     "react": "^19.2.4",
+    "react-carbon-footprint": "^1.0.0",
     "react-dom": "^19.2.4",
     "react-router-dom": "^7.13.0",
     "react-scripts": "5.0.1",

@@ -33,6 +33,7 @@ import AdminPanel from "./pages/AdminPanel";
 // Competitor-Inspired Features
 import JobPostings from "./pages/JobPostings";
 import CareAssessment from "./pages/CareAssessment";
+import CarbonFootprintDisplay from "./components/CarbonFootprintDisplay";
 
 import "./styles/main.css";
 
@@ -237,6 +238,8 @@ function AppContent() {
             </ProtectedRoute>
           }
         />
+
+        <Route path="/carbon-footprint" element={<CarbonFootprintDisplay />} />
 
         {/* Job Postings (Care.com inspired) */}
         <Route
