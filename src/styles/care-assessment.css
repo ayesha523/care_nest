@@ -1,0 +1,461 @@
+/* Care Assessment Styles */
+
+.care-assessment-container {
+  min-height: 100vh;
+  padding: 40px 20px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Assessment Wizard */
+.assessment-wizard {
+  background: white;
+  border-radius: 20px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  max-width: 700px;
+  width: 100%;
+  padding: 50px 40px;
+}
+
+/* Progress Section */
+.progress-section {
+  margin-bottom: 50px;
+}
+
+.progress-section h1 {
+  font-size: 2rem;
+  color: #333;
+  margin: 0 0 20px 0;
+  font-weight: 700;
+}
+
+.progress-bar {
+  height: 8px;
+  background: #f0f0f0;
+  border-radius: 10px;
+  overflow: hidden;
+  margin-bottom: 12px;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+  transition: width 0.4s ease;
+}
+
+.progress-text {
+  text-align: center;
+  color: #999;
+  font-size: 0.9rem;
+  margin: 0;
+  font-weight: 600;
+}
+
+/* Question Card */
+.question-card {
+  margin: 0 0 40px 0;
+}
+
+.question-card h2 {
+  font-size: 1.8rem;
+  color: #333;
+  margin: 0 0 10px 0;
+  font-weight: 700;
+}
+
+.question-subtitle {
+  color: #999;
+  font-size: 1rem;
+  margin: 0 0 30px 0;
+}
+
+/* Radio Options */
+.radio-options {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.radio-option {
+  display: flex;
+  align-items: flex-start;
+  padding: 15px;
+  border: 2px solid #f0f0f0;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.radio-option:hover {
+  border-color: #667eea;
+  background: #f8f9ff;
+}
+
+.radio-option input[type="radio"] {
+  margin-right: 15px;
+  margin-top: 4px;
+  cursor: pointer;
+  accent-color: #667eea;
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+}
+
+.option-content {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  flex: 1;
+}
+
+.option-label {
+  font-weight: 600;
+  color: #333;
+  font-size: 1rem;
+}
+
+.option-description {
+  font-size: 0.9rem;
+  color: #999;
+}
+
+/* Checkbox Options */
+.checkbox-options {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 12px;
+}
+
+.checkbox-option {
+  display: flex;
+  align-items: center;
+  padding: 12px 15px;
+  border: 2px solid #f0f0f0;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.checkbox-option:hover {
+  border-color: #667eea;
+  background: #f8f9ff;
+}
+
+.checkbox-option input[type="checkbox"] {
+  margin-right: 10px;
+  cursor: pointer;
+  accent-color: #667eea;
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+}
+
+.checkbox-label {
+  font-weight: 500;
+  color: #333;
+  font-size: 0.95rem;
+  cursor: pointer;
+}
+
+/* Navigation Buttons */
+.navigation {
+  display: flex;
+  gap: 15px;
+  margin-top: 40px;
+}
+
+.btn {
+  padding: 12px 30px;
+  border: none;
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  flex: 1;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+}
+
+.btn-primary:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+}
+
+.btn-primary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.btn-secondary {
+  background: #f0f0f0;
+  color: #333;
+  border: 2px solid #e0e0e0;
+}
+
+.btn-secondary:hover:not(:disabled) {
+  background: #e0e0e0;
+}
+
+.btn-secondary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Results Container */
+.results-container {
+  background: white;
+  border-radius: 20px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  padding: 50px 40px;
+  max-width: 800px;
+  width: 100%;
+}
+
+.results-header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.results-header h1 {
+  font-size: 2.2rem;
+  color: #333;
+  margin: 0 0 10px 0;
+  font-weight: 700;
+}
+
+.results-header .subtitle {
+  color: #999;
+  font-size: 1.1rem;
+  margin: 0;
+}
+
+/* Recommendation Cards */
+.recommendation-card {
+  background: #f9f9f9;
+  border-radius: 15px;
+  padding: 25px;
+  margin-bottom: 20px;
+  border-left: 5px solid #667eea;
+  transition: all 0.3s ease;
+}
+
+.recommendation-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 25px rgba(102, 126, 234, 0.15);
+}
+
+.recommendation-card.primary {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+}
+
+.recommendation-card h2,
+.recommendation-card h3 {
+  margin: 0 0 15px 0;
+  font-size: 1.3rem;
+  font-weight: 600;
+}
+
+.recommendation-card p {
+  color: #666;
+  margin: 10px 0;
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+.recommendation-card.primary p {
+  color: white;
+}
+
+.recommendation-title {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: white;
+  margin: 0 !important;
+}
+
+.cost-estimate {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #667eea;
+  margin: 10px 0 5px 0 !important;
+}
+
+.note {
+  font-size: 0.85rem;
+  color: #999;
+  font-style: italic;
+}
+
+.recommendations-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.recommendations-list li {
+  display: flex;
+  align-items: flex-start;
+  gap: 15px;
+  margin-bottom: 15px;
+  color: #333;
+}
+
+.recommendations-list li:last-child {
+  margin-bottom: 0;
+}
+
+.recommendations-list .badge {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  flex-shrink: 0;
+  font-size: 0.9rem;
+}
+
+/* Next Steps */
+.next-steps {
+  margin-top: 40px;
+  margin-bottom: 30px;
+}
+
+.next-steps h3 {
+  font-size: 1.5rem;
+  color: #333;
+  margin: 0 0 25px 0;
+  font-weight: 700;
+}
+
+.steps-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+  margin-bottom: 30px;
+}
+
+.step {
+  background: #f9f9f9;
+  padding: 20px;
+  border-radius: 12px;
+  text-align: center;
+  border: 2px solid #f0f0f0;
+  transition: all 0.3s ease;
+}
+
+.step:hover {
+  border-color: #667eea;
+  background: #f8f9ff;
+}
+
+.step-icon {
+  font-size: 2.5rem;
+  margin-bottom: 10px;
+}
+
+.step h4 {
+  font-size: 1.1rem;
+  color: #333;
+  margin: 0 0 8px 0;
+  font-weight: 700;
+}
+
+.step p {
+  color: #999;
+  font-size: 0.9rem;
+  margin: 0;
+}
+
+/* Action Buttons */
+.action-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.primary-btn,
+.secondary-btn {
+  padding: 14px 30px;
+  border: none;
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  width: 100%;
+}
+
+.primary-btn {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+}
+
+.primary-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+}
+
+.secondary-btn {
+  background: #f0f0f0;
+  color: #333;
+  border: 2px solid #e0e0e0;
+}
+
+.secondary-btn:hover {
+  background: #e0e0e0;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .care-assessment-container {
+    padding: 20px 15px;
+  }
+
+  .assessment-wizard,
+  .results-container {
+    padding: 30px 20px;
+  }
+
+  .progress-section h1 {
+    font-size: 1.5rem;
+  }
+
+  .question-card h2 {
+    font-size: 1.4rem;
+  }
+
+  .checkbox-options {
+    grid-template-columns: 1fr;
+  }
+
+  .navigation {
+    flex-direction: column;
+  }
+
+  .btn {
+    flex: 1;
+  }
+
+  .results-header h1 {
+    font-size: 1.8rem;
+  }
+
+  .steps-grid {
+    grid-template-columns: 1fr;
+  }
+}
