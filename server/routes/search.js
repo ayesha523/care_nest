@@ -39,15 +39,12 @@ router.get("/companions", async (req, res) => {
     let filter = { role: "companion", isBlocked: false };
 
     if (q) {
-      const safeQuery = String(q).replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-      const textRegex = new RegExp(safeQuery, "i");
       filter.$or = [
-        { name: textRegex },
-        { fullName: textRegex },
-        { bio: textRegex },
-        { skills: textRegex },
-        { specializations: textRegex },
-        { "location.city": textRegex },
+        { name: { $regex: q, $options: "i" } },
+        { bio: { $regex: q, $options: "i" } },
+        { specializations: { $regex: q, $options: "i" } },
+        { skills: { $regex: q, $options: "i" } },
+        { "location.city": { $regex: q, $options: "i" } }
       ];
     }
 
@@ -57,7 +54,7 @@ router.get("/companions", async (req, res) => {
 
     if (skills) {
       const skillArray = Array.isArray(skills) ? skills : [skills];
-      filter.skills = { $in: skillArray };
+      filter.skills = { ...filter.skills, $in: skillArray };
     }
 
     if (minRating) {
@@ -76,17 +73,6 @@ router.get("/companions", async (req, res) => {
       .select("-password")
       .populate("badges")
       .limit(50);
-
-    const [skillCatalog, specializationCatalog] = await Promise.all([
-      User.distinct("skills", { role: "companion", isBlocked: false }),
-      User.distinct("specializations", { role: "companion", isBlocked: false }),
-    ]);
-
-    const availableSkills = [...new Set(
-      [...skillCatalog, ...specializationCatalog]
-        .map((item) => (typeof item === "string" ? item.trim().toLowerCase() : ""))
-        .filter(Boolean)
-    )].sort();
 
     // Add review count and avg rating
     const companionsWithRatings = await Promise.all(
@@ -107,7 +93,6 @@ router.get("/companions", async (req, res) => {
       success: true,
       count: companionsWithRatings.length,
       companions: companionsWithRatings,
-      availableSkills,
     });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });

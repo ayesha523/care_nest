@@ -1,13 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { useUser } from "../context/UserContext";
 import "../styles/profile-edit.css";
 
 const ProfileEdit = () => {
-  const { user } = useUser();
   const [profileData, setProfileData] = useState({
     name: "",
     email: "",
-    role: "",
     age: "",
     bio: "",
     profilePicture: "",
@@ -19,31 +16,17 @@ const ProfileEdit = () => {
     },
     hourlyRate: 0,
     skills: [],
-    specializations: [],
-    certifications: [],
     interests: [],
     university: "",
     volunteeerMode: false,
-    eldyDetails: {
-      healthConditions: [],
-      mobilityLevel: "",
-      preferences: [],
-    },
   });
 
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [newSkill, setNewSkill] = useState("");
-  const [newSpecialization, setNewSpecialization] = useState("");
-  const [newCertification, setNewCertification] = useState("");
   const [newInterest, setNewInterest] = useState("");
 
-  const userId =
-    user?.id ||
-    user?._id ||
-    JSON.parse(localStorage.getItem("user") || "null")?.id ||
-    JSON.parse(localStorage.getItem("user") || "null")?._id ||
-    "";
+  const userId = JSON.parse(localStorage.getItem("user"))?._id;
   const token = localStorage.getItem("token");
 
   useEffect(() => {
@@ -51,32 +34,12 @@ const ProfileEdit = () => {
   }, [userId]);
 
   const fetchProfile = async () => {
-    if (!userId) {
-      setLoading(false);
-      return;
-    }
-
     try {
       const response = await fetch(`/api/profile/${userId}`);
       const data = await response.json();
 
       if (data.success) {
-        const fetched = data.user || {};
-        setProfileData((prev) => ({
-          ...prev,
-          ...fetched,
-          location: { ...prev.location, ...(fetched.location || {}) },
-          skills: fetched.skills || [],
-          specializations: fetched.specializations || [],
-          certifications: fetched.certifications || [],
-          interests: fetched.interests || [],
-          eldyDetails: {
-            ...prev.eldyDetails,
-            ...(fetched.eldyDetails || {}),
-            healthConditions: fetched.eldyDetails?.healthConditions || [],
-            preferences: fetched.eldyDetails?.preferences || [],
-          },
-        }));
+        setProfileData(data.user);
       }
     } catch (error) {
       console.error("Error fetching profile:", error);
@@ -112,42 +75,6 @@ const ProfileEdit = () => {
     }
   };
 
-  const addSpecialization = () => {
-    const value = newSpecialization.trim();
-    if (value && !profileData.specializations.includes(value)) {
-      setProfileData((prev) => ({
-        ...prev,
-        specializations: [...prev.specializations, value],
-      }));
-      setNewSpecialization("");
-    }
-  };
-
-  const removeSpecialization = (specialization) => {
-    setProfileData((prev) => ({
-      ...prev,
-      specializations: prev.specializations.filter((s) => s !== specialization),
-    }));
-  };
-
-  const addCertification = () => {
-    const value = newCertification.trim();
-    if (value && !profileData.certifications.includes(value)) {
-      setProfileData((prev) => ({
-        ...prev,
-        certifications: [...prev.certifications, value],
-      }));
-      setNewCertification("");
-    }
-  };
-
-  const removeCertification = (certification) => {
-    setProfileData((prev) => ({
-      ...prev,
-      certifications: prev.certifications.filter((c) => c !== certification),
-    }));
-  };
-
   const removeSkill = (skill) => {
     setProfileData(prev => ({
       ...prev,
@@ -172,32 +99,6 @@ const ProfileEdit = () => {
     }));
   };
 
-  const handleProfileImageFileChange = (e) => {
-    const file = e.target.files?.[0];
-    if (!file) {
-      return;
-    }
-
-    if (!file.type.startsWith("image/")) {
-      alert("Please select an image file.");
-      return;
-    }
-
-    if (file.size > 2 * 1024 * 1024) {
-      alert("Please upload an image smaller than 2MB.");
-      return;
-    }
-
-    const reader = new FileReader();
-    reader.onload = () => {
-      setProfileData((prev) => ({
-        ...prev,
-        profilePicture: String(reader.result || ""),
-      }));
-    };
-    reader.readAsDataURL(file);
-  };
-
   const handleSave = async (e) => {
     e.preventDefault();
     setSaving(true);
@@ -218,7 +119,6 @@ const ProfileEdit = () => {
         alert("Profile updated successfully!");
         // Update user in localStorage
         localStorage.setItem("user", JSON.stringify(data.user));
-        localStorage.setItem("carenest_user", JSON.stringify(data.user));
       } else {
         alert("Error updating profile: " + data.message);
       }
@@ -282,27 +182,6 @@ const ProfileEdit = () => {
               onChange={handleInputChange}
               placeholder="https://..."
             />
-            <input
-              type="file"
-              accept="image/png,image/jpeg,image/webp,image/gif"
-              onChange={handleProfileImageFileChange}
-            />
-            {profileData.profilePicture && (
-              <div className="profile-image-preview-wrap">
-                <img
-                  className="profile-image-preview"
-                  src={profileData.profilePicture}
-                  alt="Profile preview"
-                />
-                <button
-                  type="button"
-                  className="remove-image-btn"
-                  onClick={() => setProfileData((prev) => ({ ...prev, profilePicture: "" }))}
-                >
-                  Remove Photo
-                </button>
-              </div>
-            )}
           </div>
         </section>
 
@@ -416,64 +295,6 @@ const ProfileEdit = () => {
                     <button
                       type="button"
                       onClick={() => removeSkill(skill)}
-                      className="remove-btn"
-                    >
-                      ✕
-                    </button>
-                  </span>
-                ))}
-              </div>
-            </section>
-
-            <section className="form-section">
-              <h2>Specializations</h2>
-              <div className="skill-input-group">
-                <input
-                  type="text"
-                  value={newSpecialization}
-                  onChange={(e) => setNewSpecialization(e.target.value)}
-                  placeholder="Add a specialization..."
-                  onKeyPress={(e) => e.key === "Enter" && (e.preventDefault(), addSpecialization())}
-                />
-                <button type="button" onClick={addSpecialization}>Add</button>
-              </div>
-
-              <div className="tags-list">
-                {profileData.specializations.map((specialization) => (
-                  <span key={specialization} className="tag">
-                    {specialization}
-                    <button
-                      type="button"
-                      onClick={() => removeSpecialization(specialization)}
-                      className="remove-btn"
-                    >
-                      ✕
-                    </button>
-                  </span>
-                ))}
-              </div>
-            </section>
-
-            <section className="form-section">
-              <h2>Certifications</h2>
-              <div className="skill-input-group">
-                <input
-                  type="text"
-                  value={newCertification}
-                  onChange={(e) => setNewCertification(e.target.value)}
-                  placeholder="Add a certification..."
-                  onKeyPress={(e) => e.key === "Enter" && (e.preventDefault(), addCertification())}
-                />
-                <button type="button" onClick={addCertification}>Add</button>
-              </div>
-
-              <div className="tags-list">
-                {profileData.certifications.map((certification) => (
-                  <span key={certification} className="tag">
-                    {certification}
-                    <button
-                      type="button"
-                      onClick={() => removeCertification(certification)}
                       className="remove-btn"
                     >
                       ✕

@@ -220,7 +220,7 @@ function AdvancedChatBox({ otherUser, currentUser, conversationId, onClose }) {
           <div className="mesh-empty">
             <div className="mesh-empty-icon">💭</div>
             <h4>No messages yet</h4>
-            <p>Start your  a conversation now</p>
+            <p>Start a conversation now</p>
           </div>
         ) : (
           <>
@@ -277,7 +277,7 @@ function AdvancedChatBox({ otherUser, currentUser, conversationId, onClose }) {
         {error && <p className="mesh-error">❌ {error}</p>}
         <div className="messenger-input-wrapper">
           <textarea
-            placeholder="Write a message..."
+            placeholder="Type a message..."
             value={draft}
             onChange={handleTyping}
             onKeyDown={handleKeyDown}

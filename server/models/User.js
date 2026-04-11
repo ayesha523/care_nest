@@ -49,10 +49,6 @@ const userSchema = new mongoose.Schema(
       type: [String],
       default: [],
     },
-    certifications: {
-      type: [String],
-      default: [],
-    },
     hourlyRate: {
       type: Number,
       min: 0,

@@ -71,17 +71,10 @@ function Navbar() {
   const handleSearch = (e) => {
     e.preventDefault();
     if (searchQuery.trim()) {
-      if (currentUser?.role === "companion") {
-        navigate(`/companion-dashboard?elderly=${encodeURIComponent(searchQuery)}`);
-      } else {
-        navigate(`/search-companions?q=${encodeURIComponent(searchQuery)}`);
-      }
+      navigate(`/search-companions?q=${encodeURIComponent(searchQuery)}`);
       setSearchQuery("");
     }
   };
-
-  const searchPlaceholder =
-    currentUser?.role === "companion" ? "Search elderly clients..." : "Search companions...";
 
   /**
    * Handles user logout
@@ -137,10 +130,10 @@ function Navbar() {
             <form className="navbar-search" onSubmit={handleSearch}>
               <input
                 type="text"
-                placeholder={searchPlaceholder}
+                placeholder="Search companions..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                aria-label={searchPlaceholder}
+                aria-label="Search companions"
               />
               <button type="submit" className="search-btn" aria-label="Search">🔍</button>
             </form>
@@ -214,10 +207,6 @@ function Navbar() {
                     📢 Notifications ({unreadNotifications})
                   </a>
 
-                  <a href="/booking-history" className="dropdown-item" onClick={() => setDropdownOpen(false)}>
-                    📜 Booking History & Transactions
-                  </a>
-
                   {currentUser.role === "elderly" && (
                     <>
                       <a href="/care-assessment" className="dropdown-item" onClick={() => setDropdownOpen(false)}>
@@ -236,11 +225,9 @@ function Navbar() {
                   )}
 
                   {currentUser.role === "companion" && (
-                    <>
-                      <a href="/availability" className="dropdown-item" onClick={() => setDropdownOpen(false)}>
-                        📅 Manage Availability
-                      </a>
-                    </>
+                    <a href="/availability" className="dropdown-item" onClick={() => setDropdownOpen(false)}>
+                      📅 Manage Availability
+                    </a>
                   )}
 
                   <div className="dropdown-divider"></div>

@@ -66,7 +66,6 @@ app.use("/api/daily-checkin", require("./routes/daily-checkin"));
 app.use("/api/mood", require("./routes/mood"));
 app.use("/api/badges", require("./routes/badges"));
 app.use("/api/admin", require("./routes/admin"));
-app.use("/api/payments", require("./routes/payments"));
 
 // Competitor-Inspired Features
 app.use("/api/job-postings", require("./routes/job-postings"));

@@ -1,38 +1,25 @@
 import React, { useState, useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 import "../styles/search-companions.css";
 
 const SearchCompanions = () => {
-  const location = useLocation();
+  const [searchParamsUrl] = useSearchParams();
+  const qFromUrl = searchParamsUrl.get("q") || "";
+
   const [, setCompanions] = useState([]);
   const [filteredCompanions, setFilteredCompanions] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [availableSkills, setAvailableSkills] = useState([]);
-  const [searchParams, setSearchParams] = useState(() => ({
-    q: new URLSearchParams(location.search).get("q")?.trim() || "",
+  const [searchParams, setSearchParams] = useState({
     location: "",
     skills: [],
     minRating: 0,
     maxRate: 100,
     volunteersOnly: false,
-  }));
+  });
 
   useEffect(() => {
-    fetchCompanions(searchParams);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  useEffect(() => {
-    const queryFromUrl = new URLSearchParams(location.search).get("q")?.trim() || "";
-    if (queryFromUrl === searchParams.q) {
-      return;
-    }
-
-    const nextParams = { ...searchParams, q: queryFromUrl };
-    setSearchParams(nextParams);
-    fetchCompanions(nextParams);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [location.search]);
+    fetchCompanions({ ...searchParams, q: qFromUrl });
+  }, [qFromUrl]);
 
   const fetchCompanions = async (params = {}) => {
     setLoading(true);
@@ -51,9 +38,6 @@ const SearchCompanions = () => {
       if (data.success) {
         setCompanions(data.companions);
         setFilteredCompanions(data.companions);
-        const dynamicSkills = Array.isArray(data.availableSkills) ? data.availableSkills : [];
-        const selectedSkills = Array.isArray(params.skills) ? params.skills : [];
-        setAvailableSkills([...new Set([...dynamicSkills, ...selectedSkills])]);
       }
     } catch (error) {
       console.error("Error fetching companions:", error);
@@ -71,7 +55,7 @@ const SearchCompanions = () => {
     };
 
     setSearchParams(newParams);
-    fetchCompanions(newParams);
+    fetchCompanions({ ...newParams, q: qFromUrl });
   };
 
   const handleSkillToggle = (skill) => {
@@ -81,13 +65,10 @@ const SearchCompanions = () => {
 
     const newParams = { ...searchParams, skills: newSkills };
     setSearchParams(newParams);
-    fetchCompanions(newParams);
+    fetchCompanions({ ...newParams, q: qFromUrl });
   };
 
-  const formatSkill = (skill) =>
-    skill
-      .replace(/-/g, " ")
-      .replace(/\b\w/g, (char) => char.toUpperCase());
+  const availableSkills = ["reading", "talking", "walking", "tech-help", "cooking", "gardening"];
 
   return (
     <div className="search-companions-container">
@@ -102,17 +83,6 @@ const SearchCompanions = () => {
           <h3>Filters</h3>
 
           {/* Location Filter */}
-          <div className="filter-group">
-            <label>Search</label>
-            <input
-              type="text"
-              name="q"
-              placeholder="Name, skill, city"
-              value={searchParams.q}
-              onChange={handleFilterChange}
-            />
-          </div>
-
           <div className="filter-group">
             <label>Location</label>
             <input
@@ -135,12 +105,9 @@ const SearchCompanions = () => {
                     checked={searchParams.skills.includes(skill)}
                     onChange={() => handleSkillToggle(skill)}
                   />
-                  <span>{formatSkill(skill)}</span>
+                  <span className="capitalize">{skill.replace("-", " ")}</span>
                 </label>
               ))}
-              {availableSkills.length === 0 && (
-                <p className="no-skill-hint">No skills available yet.</p>
-              )}
             </div>
           </div>
 

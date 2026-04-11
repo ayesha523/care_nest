@@ -149,13 +149,6 @@ router.put("/:bookingId/accept", verifyToken, async (req, res) => {
       return res.status(403).json({ success: false, message: "Unauthorized" });
     }
 
-    if (booking.status !== "pending") {
-      return res.status(400).json({
-        success: false,
-        message: `Only pending bookings can be accepted. Current status: ${booking.status}`,
-      });
-    }
-
     booking.status = "confirmed";
     await booking.save();
 
@@ -196,13 +189,6 @@ router.put("/:bookingId/reject", verifyToken, async (req, res) => {
       return res.status(403).json({ success: false, message: "Unauthorized" });
     }
 
-    if (booking.status !== "pending") {
-      return res.status(400).json({
-        success: false,
-        message: `Only pending bookings can be declined. Current status: ${booking.status}`,
-      });
-    }
-
     booking.status = "rejected";
     await booking.save();
 
@@ -236,51 +222,29 @@ router.put("/:bookingId/cancel", verifyToken, async (req, res) => {
       return res.status(403).json({ success: false, message: "Unauthorized" });
     }
 
-    const isCompanion = booking.companionId.toString() === req.user.id;
-    const isElderly = booking.elderlyId.toString() === req.user.id;
+    if (["pending", "confirmed"].includes(booking.status)) {
+      booking.status = "cancelled";
+      booking.cancelledBy = cancelledBy || "user";
+      booking.cancellationReason = reason;
+      await booking.save();
 
-    if (!["pending", "confirmed", "in-progress"].includes(booking.status)) {
-      return res.status(400).json({
-        success: false,
-        message: `Booking cannot be cancelled in status: ${booking.status}`,
+      // Notify the other party
+      const notifiedUserId =
+        booking.elderlyId.toString() === req.user.id
+          ? booking.companionId
+          : booking.elderlyId;
+
+      const notification = new Notification({
+        userId: notifiedUserId,
+        type: "booking_cancelled",
+        title: "Booking Cancelled",
+        message: "A booking has been cancelled",
+        relatedId: booking._id,
+        relatedModel: "Booking",
       });
+
+      await notification.save();
     }
-
-    if (isCompanion && !["confirmed", "in-progress"].includes(booking.status)) {
-      return res.status(400).json({
-        success: false,
-        message: "Companion can cancel only after accepting the booking",
-      });
-    }
-
-    if (booking.paymentStatus === "paid") {
-      return res.status(400).json({
-        success: false,
-        message: "Paid bookings cannot be cancelled directly",
-      });
-    }
-
-    booking.status = "cancelled";
-    booking.cancelledBy = cancelledBy || (isCompanion ? "companion" : isElderly ? "elderly" : "elderly");
-    booking.cancellationReason = reason;
-    await booking.save();
-
-    // Notify the other party
-    const notifiedUserId =
-      booking.elderlyId.toString() === req.user.id
-        ? booking.companionId
-        : booking.elderlyId;
-
-    const notification = new Notification({
-      userId: notifiedUserId,
-      type: "booking_cancelled",
-      title: "Booking Cancelled",
-      message: "A booking has been cancelled",
-      relatedId: booking._id,
-      relatedModel: "Booking",
-    });
-
-    await notification.save();
 
     res.status(200).json({
       success: true,

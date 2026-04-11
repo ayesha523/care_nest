@@ -29,9 +29,6 @@ import DailyCheckIn from "./pages/DailyCheckIn";
 import NotificationsPage from "./pages/NotificationsPage";
 import EmergencyContacts from "./pages/EmergencyContacts";
 import AdminPanel from "./pages/AdminPanel";
-import BookingHistoryTransactions from "./pages/BookingHistoryTransactions";
-import PaymentGatewayCheckout from "./pages/PaymentGatewayCheckout";
-import PaymentGatewayResult from "./pages/PaymentGatewayResult";
 
 // Competitor-Inspired Features
 import JobPostings from "./pages/JobPostings";
@@ -132,66 +129,6 @@ function AppContent() {
               <>
                 <Navbar />
                 <BookingPage />
-              </>
-            </ProtectedRoute>
-          }
-        />
-
-        <Route
-          path="/booking-history"
-          element={
-            <ProtectedRoute roles={["elderly", "companion"]}>
-              <>
-                <Navbar />
-                <BookingHistoryTransactions />
-              </>
-            </ProtectedRoute>
-          }
-        />
-
-        <Route
-          path="/payment-gateway/checkout/:tranId"
-          element={
-            <ProtectedRoute roles={["elderly"]}>
-              <>
-                <Navbar />
-                <PaymentGatewayCheckout />
-              </>
-            </ProtectedRoute>
-          }
-        />
-
-        <Route
-          path="/payment-gateway/success"
-          element={
-            <ProtectedRoute roles={["elderly"]}>
-              <>
-                <Navbar />
-                <PaymentGatewayResult type="success" />
-              </>
-            </ProtectedRoute>
-          }
-        />
-
-        <Route
-          path="/payment-gateway/fail"
-          element={
-            <ProtectedRoute roles={["elderly"]}>
-              <>
-                <Navbar />
-                <PaymentGatewayResult type="fail" />
-              </>
-            </ProtectedRoute>
-          }
-        />
-
-        <Route
-          path="/payment-gateway/cancel"
-          element={
-            <ProtectedRoute roles={["elderly"]}>
-              <>
-                <Navbar />
-                <PaymentGatewayResult type="cancel" />
               </>
             </ProtectedRoute>
           }
