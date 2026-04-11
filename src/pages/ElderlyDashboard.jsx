@@ -66,16 +66,18 @@ function ElderlyDashboard() {
       if (bookingsResponse.ok) {
         const bookingsData = await bookingsResponse.json();
         const allBookings = bookingsData.bookings || [];
+
         const upcoming = allBookings.filter(
-          (booking) =>
-            new Date(booking.startDate) > new Date() &&
-            ["confirmed", "pending", "in-progress"].includes(booking.status)
+          (b) =>
+            new Date(b.startDate) > new Date() &&
+            ["confirmed", "pending", "in-progress"].includes(b.status)
         );
 
         setUpcomingBookings(upcoming.slice(0, 3));
+
         setStats({
-          totalHours: allBookings.reduce((sum, b) => sum + (b.duration || 0), 0),
-          totalSpent: allBookings.reduce((sum, b) => sum + (b.totalCost || 0), 0),
+          totalHours: allBookings.reduce((s, b) => s + (b.duration || 0), 0),
+          totalSpent: allBookings.reduce((s, b) => s + (b.totalCost || 0), 0),
           totalBookings: allBookings.length,
         });
       }
@@ -84,24 +86,24 @@ function ElderlyDashboard() {
         headers: { Authorization: `Bearer ${token}` },
       });
       if (notificationsResponse.ok) {
-        const notificationsData = await notificationsResponse.json();
-        setUnreadNotifications(notificationsData.unreadCount || 0);
+        const data = await notificationsResponse.json();
+        setUnreadNotifications(data.unreadCount || 0);
       }
 
       const checkinResponse = await fetch("/api/daily-checkin/today/status", {
         headers: { Authorization: `Bearer ${token}` },
       });
       if (checkinResponse.ok) {
-        const checkinData = await checkinResponse.json();
-        setHasCheckedInToday(!!checkinData.hasCheckedIn);
+        const data = await checkinResponse.json();
+        setHasCheckedInToday(!!data.hasCheckedIn);
       }
 
       const healthResponse = await fetch(`/api/profile/${userId}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       if (healthResponse.ok) {
-        const healthData = await healthResponse.json();
-        const profile = healthData.user || {};
+        const data = await healthResponse.json();
+        const profile = data.user || {};
         setHealthConditions(profile.healthConditions || []);
         setMedications(profile.medications || []);
       }
@@ -110,11 +112,11 @@ function ElderlyDashboard() {
         headers: { Authorization: `Bearer ${token}` },
       });
       if (emergencyResponse.ok) {
-        const emergencyData = await emergencyResponse.json();
-        setEmergencyContactsData(emergencyData.contacts || []);
+        const data = await emergencyResponse.json();
+        setEmergencyContactsData(data.contacts || []);
       }
-    } catch (error) {
-      console.error(error);
+    } catch (err) {
+      console.error(err);
     } finally {
       setLastUpdatedAt(new Date());
       setLoading(false);
@@ -125,51 +127,129 @@ function ElderlyDashboard() {
     fetchDashboardData();
   }, [fetchDashboardData]);
 
-  const scrollToSection = useCallback((sectionId) => {
-    const target = document.getElementById(sectionId);
-    if (target) {
-      target.scrollIntoView({ behavior: "smooth", block: "start" });
+  const openChatWith = async (otherUserId, userData) => {
+    const token = localStorage.getItem("token");
+    if (!otherUserId || !token) return;
+
+    try {
+      const res = await fetch("/api/messages/conversations", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ otherUserId }),
+      });
+
+      const data = await res.json();
+      if (data.success) {
+        setActiveChatUser(userData);
+        setActiveChatConversation(data.conversation._id);
+      }
+    } catch (err) {
+      console.error(err);
     }
+  };
+
+  const chatContacts = useMemo(
+    () =>
+      companions.map((c) => ({
+        id: c.id,
+        name: c.name,
+        subtitle: c.specializations?.[0] || "Care companion",
+      })),
+    [companions]
+  );
+
+  const handleFilter = (e) => {
+    const q = e.target.value.toLowerCase();
+    setFilter(q);
+
+    setFilteredCompanions(
+      companions.filter(
+        (c) =>
+          c.name.toLowerCase().includes(q) ||
+          (c.bio || "").toLowerCase().includes(q)
+      )
+    );
+  };
+
+  const scrollToSection = useCallback((id) => {
+    const el = document.getElementById(id);
+    if (el) el.scrollIntoView({ behavior: "smooth" });
   }, []);
 
   const visibleCompanions = useMemo(() => {
     return filteredCompanions
       .filter((c) => {
-        if (c.hourlyRate > maxRate) return false;
-        if (c.rating < minRating) return false;
+        if (Number(c.hourlyRate || 0) > maxRate) return false;
+        if (Number(c.rating || 0) < minRating) return false;
         if (onlyVerified && !c.verified) return false;
         return true;
       })
-      .sort((a, b) => b.rating - a.rating);
+      .sort((a, b) => Number(b.rating || 0) - Number(a.rating || 0));
   }, [filteredCompanions, maxRate, minRating, onlyVerified]);
 
   return (
     <>
       <Navbar />
+
       <div className="dashboard-shell elderly-theme">
+        {/* CHAT MODAL */}
+        {activeChatUser && activeChatConversation && (
+          <div className="modal-chatbox-overlay" onClick={() => {
+            setActiveChatUser(null);
+            setActiveChatConversation(null);
+          }}>
+            <div className="modal-chatbox-wrapper" onClick={(e) => e.stopPropagation()}>
+              <AdvancedChatBox
+                otherUser={activeChatUser}
+                currentUser={user}
+                conversationId={activeChatConversation}
+                onClose={() => {
+                  setActiveChatUser(null);
+                  setActiveChatConversation(null);
+                }}
+              />
+            </div>
+          </div>
+        )}
 
         <header className="dashboard-hero-card">
-          <h1>Welcome back, {user?.name || "User"}</h1>
+          <h1>Welcome, {user?.name || "User"}</h1>
+          <button onClick={fetchDashboardData}>Refresh</button>
         </header>
 
-        {/* ACTION CENTER */}
-        <section className="panel-card action-center-card">
-          <h2>🎯 Action Center</h2>
-          <p>Stay updated with your care plan.</p>
+        <section className="stats-band">
+          <div>Hours: {stats.totalHours}</div>
+          <div>Spent: ${stats.totalSpent}</div>
+          <div>Bookings: {stats.totalBookings}</div>
+          <div>Alerts: {unreadNotifications}</div>
         </section>
 
-        {/* FIND COMPANION */}
+        {/* ACTION CENTER (FIXED) */}
         <section className="panel-card">
-          <h2>🔍 Find Companion</h2>
+          <h2>Action Center</h2>
+          <p>Everything is up to date.</p>
+        </section>
+
+        <section id="elderly-find">
+          <input value={filter} onChange={handleFilter} placeholder="Search..." />
 
           {visibleCompanions.map((c) => (
             <div key={c.id}>
               <h3>{c.name}</h3>
               <button onClick={() => setSelectedCompanion(c)}>Request</button>
+              <button onClick={() => openChatWith(c.id, c)}>Chat</button>
             </div>
           ))}
         </section>
 
+        <RealtimeChatWidget
+          currentUser={user}
+          contacts={chatContacts}
+          title="Chats"
+        />
       </div>
     </>
   );
